@@ -1,0 +1,1525 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>8</numberOfRecords>
+  <records>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02617cam a2200553 i 4500</leader>
+          <controlfield tag="001">99128277341105763</controlfield>
+          <controlfield tag="005">20261027191542.0</controlfield>
+          <controlfield tag="007">t|</controlfield>
+          <controlfield tag="008">251223t20262022enk    e      000 1 eng d</controlfield>
+          <datafield ind1=" " ind2=" " tag="015">
+            <subfield code="a">GBC6011976</subfield>
+            <subfield code="2">bnb</subfield>
+          </datafield>
+          <datafield ind1="7" ind2=" " tag="016">
+            <subfield code="a">300674947</subfield>
+            <subfield code="2">Uk</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241829820</subfield>
+            <subfield code="q">hardback</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241829813</subfield>
+            <subfield code="q">paperback</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="024">
+            <subfield code="a">CIPO000335299</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)1564593099</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)on1564593099</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)998569569705761</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="050">
+            <subfield code="a">PS3604.I49</subfield>
+            <subfield code="b">B88 2026</subfield>
+          </datafield>
+          <datafield ind1="0" ind2="4" tag="082">
+            <subfield code="a">813.6</subfield>
+            <subfield code="2">23</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Dinniman, Matt,</subfield>
+            <subfield code="e">author.</subfield>
+            <subfield code="1">https://id.oclc.org/worldcat/entity/E39PCjD7wTK6r7K3YR7jjhppT3</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="4" tag="245">
+            <subfield code="a">The butcher's masquerade /</subfield>
+            <subfield code="c">Matt Dinniman.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="1" tag="264">
+            <subfield code="a">London :</subfield>
+            <subfield code="b">Michael Joseph,</subfield>
+            <subfield code="c">2026.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="264">
+            <subfield code="c">©2022</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">707 pages ;</subfield>
+            <subfield code="c">25 cm.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="336">
+            <subfield code="a">text</subfield>
+            <subfield code="b">txt</subfield>
+            <subfield code="2">rdacontent</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="337">
+            <subfield code="a">unmediated</subfield>
+            <subfield code="b">n</subfield>
+            <subfield code="2">rdamedia</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="338">
+            <subfield code="a">volume</subfield>
+            <subfield code="b">nc</subfield>
+            <subfield code="2">rdacarrier</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="490">
+            <subfield code="a">Dungeon crawler Carl ;</subfield>
+            <subfield code="v">bk. 5</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="520">
+            <subfield code="a">Carl and Princess Donut refuse to be prey on this level in the USA Today bestselling Dungeon Crawler Carl series by Matt Dinniman-now with bonus material exclusive to this print edition. Attention. Attention. The gates are down. The hunters are loose. Run, Run, Run. A lush jungle teeming with danger. Savage dinosaurs seeking blood. A fallen princess intent on vengeance. A mysterious, end-of-floor celebration for the top crawlers, dubbed "The Butcher's Masquerade." The sixth floor. The Hunting Grounds. As the remaining crawlers battle for their lives, a new, terrible threat looms. Outside tourists are finally allowed to enter the game, and they are here and ready to hunt. Among them is Vrah, a famed and veteran hunter, intent on collecting the biggest trophy of her career. But their prey is far from harmless, and this season they are fighting back.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">End of the world</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Video games</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Human-alien encounters</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Television game shows</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Quests (Expeditions)</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Prisons</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Labyrinths</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Princesses</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Cats</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Dinosaurs</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Monsters</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Castles</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Hunters</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Praying mantis</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Gods</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Novels</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Action and adventure fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">LitRPG (Fiction)</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="800">
+            <subfield code="a">Dinniman, Matt.</subfield>
+            <subfield code="t">Dungeon crawler Carl (Series) ;</subfield>
+            <subfield code="v">bk. 5.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128277341105763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">SBMAG</subfield>
+            <subfield code="c">Fjernlån - Det Kgl. Aarhus</subfield>
+            <subfield code="d">2-150-5837</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="i">ARH</subfield>
+            <subfield code="j">FJE</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">KB Victor Albecks Vej, Aarhus</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99128277341105763</recordIdentifier>
+      <recordPosition>1</recordPosition>
+    </record>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02919cam a2200613 i 4500</leader>
+          <controlfield tag="001">99128193330705763</controlfield>
+          <controlfield tag="005">20261027191527.0</controlfield>
+          <controlfield tag="007">ta</controlfield>
+          <controlfield tag="008">250929t20252021enk    e      000 f eng d</controlfield>
+          <datafield ind1=" " ind2=" " tag="015">
+            <subfield code="a">GBC5C2068</subfield>
+            <subfield code="2">bnb</subfield>
+          </datafield>
+          <datafield ind1="7" ind2=" " tag="016">
+            <subfield code="a">300634126</subfield>
+            <subfield code="2">Uk</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241816219</subfield>
+            <subfield code="q">hardback</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241816233</subfield>
+            <subfield code="q">paperback</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="024">
+            <subfield code="a">CIPO000298354</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)1548372165</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)on1548372165</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)998552704505761</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="050">
+            <subfield code="a">PS3604.I49</subfield>
+            <subfield code="b">C37 2025</subfield>
+          </datafield>
+          <datafield ind1="0" ind2="4" tag="082">
+            <subfield code="a">813.6</subfield>
+            <subfield code="2">23</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Dinniman, Matt,</subfield>
+            <subfield code="e">author.</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="245">
+            <subfield code="a">Carl's doomsday scenario /</subfield>
+            <subfield code="c">Matt Dinniman.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="1" tag="264">
+            <subfield code="a">London, England :</subfield>
+            <subfield code="b">Penguin Michael Joseph,</subfield>
+            <subfield code="c">2025.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="264">
+            <subfield code="c">©2021</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">371 pages ;</subfield>
+            <subfield code="c">25 cm.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="336">
+            <subfield code="a">text</subfield>
+            <subfield code="b">txt</subfield>
+            <subfield code="2">rdacontent</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="337">
+            <subfield code="a">unmediated</subfield>
+            <subfield code="b">n</subfield>
+            <subfield code="2">rdamedia</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="338">
+            <subfield code="a">volume</subfield>
+            <subfield code="b">nc</subfield>
+            <subfield code="2">rdacarrier</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="490">
+            <subfield code="a">Dungeon crawler Carl ;</subfield>
+            <subfield code="v">2</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">Originally self-published: Matt Dinniman, 2021.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">On front cover: Boom!</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="520">
+            <subfield code="a">Greetings, crawlers! The training levels have concluded. The games may truly begin. Now on the third floor, Carl and Princess Donut must fight harder than ever. They've already proven that a Coast Guard vet and once-and-forever feline royalty are an almost unstoppable team. Their ratings are off the chart and the watchers can't get enough. But the dungeon gets more dangerous each day, and now there's a whole new problem to deal with... side quests. They call this level the Over City. A sprawling, once-thriving metropolis devastated by a mysterious calamity. But these streets are far from abandoned. An undead circus trawls the ruins. Murdered women rain from the sky. An ancient spell is finally ready to reveal its dark purpose. Can Carl and Donut survive this level in time? And can Carl finally find some pants?</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Monsters</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">End of the world</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Adventure and adventurers</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Television game shows</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Reality television programs</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Contests</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Human-animal relationships</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Cats</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Labyrinths</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Prisons</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Survival</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Monstres</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Fin du monde</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Jeux télévisés</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Concours et compétitions</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Labyrinthes</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Habiletés de survie</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Novels</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Apocalyptic fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Humorous fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">LitRPG (Fiction)</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="800">
+            <subfield code="a">Dinniman, Matt.</subfield>
+            <subfield code="t">Dungeon crawler Carl (Series) ;</subfield>
+            <subfield code="v">2.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128193330705763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">RES_SHARE</subfield>
+            <subfield code="c">Lending Resource Sharing Requests</subfield>
+            <subfield code="d">2-150-5418</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="j">IN_RS_REQ</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">The Royal Library, ILL</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99128193330705763</recordIdentifier>
+      <recordPosition>2</recordPosition>
+    </record>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02316nam a2200613 i 4500</leader>
+          <controlfield tag="001">99128819715505763</controlfield>
+          <controlfield tag="005">20261027191700.0</controlfield>
+          <controlfield tag="008">260828s2026    dk ||||       00||f dan||</controlfield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9788785539007</subfield>
+            <subfield code="q">hf.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(DK-870970)143888762</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)998610471505761</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="041">
+            <subfield code="a">dan</subfield>
+            <subfield code="h">eng</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Dinniman, Matt</subfield>
+            <subfield code="4">aut</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="240">
+            <subfield code="a">Carl's doomsday scenario.</subfield>
+            <subfield code="l">dan</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="245">
+            <subfield code="a">Carls dommedagsscenarie</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="250">
+            <subfield code="a">1. udgave</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="260">
+            <subfield code="a">[Aarhus] :</subfield>
+            <subfield code="b">DreamLitt,</subfield>
+            <subfield code="c">2026</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">406 sider :</subfield>
+            <subfield code="b">ill.</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="490">
+            <subfield code="a">Dungeon crawler Carl ;</subfield>
+            <subfield code="v">bog 2</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">På omslaget: Roman</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">Originaltitel: Carl's doomsday scenario</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="520">
+            <subfield code="a">Carl og Donut skal kæmpe mod monstre, stige i level og gøre det med stil, så de kan underholde tilskuerne i det gigantiske gameshow! Til voksne læsere af overrumplende og underholdende science fiction-fortællinger i subgenren "literary role-playing game"</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">overlevelse</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">gaming</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">rollespil</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">gameshows</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">underholdning</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">venskab</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">slåskampe</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">gladiatorkampe</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">monstre</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">fiktive steder</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="651">
+            <subfield code="a">USA</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="653">
+            <subfield code="a">dungeon crawler carl</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="720">
+            <subfield code="a">Tom Vedsted Vonsild</subfield>
+            <subfield code="4">trl</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="720">
+            <subfield code="a">Erik Wilson</subfield>
+            <subfield code="4">ill</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="830">
+            <subfield code="a">Dungeon crawler Carl ;</subfield>
+            <subfield code="v">bog 2</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128819715505763</subfield>
+            <subfield code="8">222405862150005763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">SBMAG</subfield>
+            <subfield code="c">Loan collection (place request)</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="i">ARH</subfield>
+            <subfield code="j">HFSMAGVAK4</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">KB Victor Albecks Vej, Aarhus</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128819715505763</subfield>
+            <subfield code="8">222405862110005763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">KBL</subfield>
+            <subfield code="c">Reading room only (place request)</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="i">KBH</subfield>
+            <subfield code="j">LFDAKLDA</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">2</subfield>
+            <subfield code="q">The Black Diamond, Copenhagen</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99128819715505763</recordIdentifier>
+      <recordPosition>3</recordPosition>
+    </record>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02167cam a2200457 i 4500</leader>
+          <controlfield tag="001">99128193330805763</controlfield>
+          <controlfield tag="005">20261027191523.0</controlfield>
+          <controlfield tag="007">ta</controlfield>
+          <controlfield tag="008">250929t20252021enka   e      000 1 eng d</controlfield>
+          <datafield ind1=" " ind2=" " tag="015">
+            <subfield code="a">GBC5C2069</subfield>
+            <subfield code="2">bnb</subfield>
+          </datafield>
+          <datafield ind1="7" ind2=" " tag="016">
+            <subfield code="a">300634127</subfield>
+            <subfield code="2">Uk</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241816240</subfield>
+            <subfield code="q">(hbk.)</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241816257</subfield>
+            <subfield code="q">(pbk.)</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="024">
+            <subfield code="a">CIPO000298355</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)1548373448</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)on1548373448</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)998552704605761</subfield>
+          </datafield>
+          <datafield ind1="0" ind2="4" tag="082">
+            <subfield code="a">813.6</subfield>
+            <subfield code="2">23</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Dinniman, Matt,</subfield>
+            <subfield code="e">author.</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="4" tag="245">
+            <subfield code="a">The dungeon anarchist's cookbook /</subfield>
+            <subfield code="c">Matt Dinniman.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="1" tag="264">
+            <subfield code="a">London :</subfield>
+            <subfield code="b">Penguin Michael Joseph,</subfield>
+            <subfield code="c">2025.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="264">
+            <subfield code="c">©2021</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">532 pages :</subfield>
+            <subfield code="b">illustrations ;</subfield>
+            <subfield code="c">25 cm.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="336">
+            <subfield code="a">text</subfield>
+            <subfield code="b">txt</subfield>
+            <subfield code="2">rdacontent</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="336">
+            <subfield code="a">still image</subfield>
+            <subfield code="b">sti</subfield>
+            <subfield code="2">rdacontent</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="337">
+            <subfield code="a">unmediated</subfield>
+            <subfield code="b">n</subfield>
+            <subfield code="2">rdamedia</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="338">
+            <subfield code="a">volume</subfield>
+            <subfield code="b">nc</subfield>
+            <subfield code="2">rdacarrier</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="490">
+            <subfield code="a">Dungeon crawler Carl ;</subfield>
+            <subfield code="v">3</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">Originally self-published: Matt Dinniman, 2021.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="520">
+            <subfield code="a">Welcome to the Iron Tangle! Carl and Donut have survived so far, but this fourth level is unlike anything they could imagine. The Iron Tangle: an impossibly complicated subway system tied together into a knot of trains of all kinds. The top ten list of most popular crawlers is now confirmed, and Carl and Donut have made it. But that popularity comes with a price... They each now have a bounty on their head. To get through this level, they must solve the puzzle of the floor. The secret to unravelling it all may be hidden in the pages of a seemingly useless book. If they want to come close to success, they'll have to work with other crawlers. Making friends is easy... until they want to kill you. -- from the dust jacket.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">End of the world</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Television game shows</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Prisons</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Labyrinths</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Monsters</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Novels</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Apocalyptic fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Humorous fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">LitRPG (Fiction)</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="800">
+            <subfield code="a">Dinniman, Matt.</subfield>
+            <subfield code="t">Dungeon crawler Carl (Series) ;</subfield>
+            <subfield code="v">3.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128193330805763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">RES_SHARE</subfield>
+            <subfield code="c">Lending Resource Sharing Requests</subfield>
+            <subfield code="d">2-150-5584</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="j">IN_RS_REQ</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">The Royal Library, ILL</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99128193330805763</recordIdentifier>
+      <recordPosition>4</recordPosition>
+    </record>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02620nam a2200673 i 4500</leader>
+          <controlfield tag="001">99128194369805763</controlfield>
+          <controlfield tag="005">20261027191547.0</controlfield>
+          <controlfield tag="008">260505s2026    dk ||||       00||f dan||</controlfield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9788791589744</subfield>
+            <subfield code="q">hf.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(DK-870970)143252981</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)998553447505761</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="041">
+            <subfield code="a">dan</subfield>
+            <subfield code="h">eng</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Dinniman, Matt</subfield>
+            <subfield code="4">aut</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="240">
+            <subfield code="a">Dungeon Crawler Carl.</subfield>
+            <subfield code="l">dan</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="245">
+            <subfield code="a">Dungeon Crawler Carl</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="250">
+            <subfield code="a">1. udgave</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="260">
+            <subfield code="a">[Aarhus] :</subfield>
+            <subfield code="b">DreamLitt,</subfield>
+            <subfield code="c">2026</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">490 sider</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="490">
+            <subfield code="a">Dungeon Crawler Carl ;</subfield>
+            <subfield code="v">bog 1</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">På omslaget: Roman</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">Originaltitel: Dungeon Crawler Carl</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="520">
+            <subfield code="a">Da aliens har destrueret Jorden for at høste dens ressourcer, bliver de overlevende tvunget til at deltage i et intergalaktisk gameshow. Carl og hans kat Donut forsøger desperat at overleve, men alt handler om seertal, og tilskuerne skal have noget for pengene! For alle voksne, der elsker underholdende og hæsblæsende bøger i genren "Literary Role-Playing Game".</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="546">
+            <subfield code="a">Tekst på dansk</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">nærkamp</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">venskab</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">identitet</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">gameshows</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">gaming</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">rumvæsener</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">overlevelse</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">vold</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">drab</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">katte</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">monstre</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">rollespil</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">fiktive steder</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="651">
+            <subfield code="a">USA</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction.</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="720">
+            <subfield code="a">Tom Vedsted Vonsild</subfield>
+            <subfield code="4">trl</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="720">
+            <subfield code="a">Erik Wilson</subfield>
+            <subfield code="4">ill</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="830">
+            <subfield code="a">Dungeon Crawler Carl ;</subfield>
+            <subfield code="v">bog 1</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128194369805763</subfield>
+            <subfield code="8">222395573120005763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">SBMAG</subfield>
+            <subfield code="c">Loan collection (place request)</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="i">ARH</subfield>
+            <subfield code="j">HFSMAGVAK4</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">KB Victor Albecks Vej, Aarhus</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128194369805763</subfield>
+            <subfield code="8">222395573100005763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">KBL</subfield>
+            <subfield code="c">Reading room only (place request)</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="i">KBH</subfield>
+            <subfield code="j">LFDAKLDA</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">2</subfield>
+            <subfield code="q">The Black Diamond, Copenhagen</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99128194369805763</recordIdentifier>
+      <recordPosition>5</recordPosition>
+    </record>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02859nam a2200733 i 4500</leader>
+          <controlfield tag="001">99128175701605763</controlfield>
+          <controlfield tag="005">20260612063012.0</controlfield>
+          <controlfield tag="006">m|||||o||d||||||||</controlfield>
+          <controlfield tag="007">cr |||||||||||</controlfield>
+          <controlfield tag="008">260505s2026    dk |||| o     00||f dan||</controlfield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9788791589911</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(DK-870970)143252973</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)998544060005761</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="041">
+            <subfield code="a">dan</subfield>
+            <subfield code="h">eng</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Dinniman, Matt</subfield>
+            <subfield code="4">aut</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="240">
+            <subfield code="a">Dungeon Crawler Carl.</subfield>
+            <subfield code="l">dan</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="245">
+            <subfield code="a">Dungeon Crawler Carl :</subfield>
+            <subfield code="b">roman</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="250">
+            <subfield code="a">1. e-bogsudgave</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="260">
+            <subfield code="b">DreamLitt :</subfield>
+            <subfield code="b">[sælges på internettet],</subfield>
+            <subfield code="c">2026</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">490 sider</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="490">
+            <subfield code="a">Dungeon Crawler Carl ;</subfield>
+            <subfield code="v">[1]</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">Downloades i EPUB-format</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">Sidetal gengivet fra den fysiske bog</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">Originaltitel: Dungeon Crawler Carl</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="520">
+            <subfield code="a">Da aliens har destrueret Jorden for at høste dens ressourcer, bliver de overlevende tvunget til at deltage i et intergalaktisk gameshow. Carl og hans kat Donut forsøger desperat at overleve, men alt handler om seertal, og tilskuerne skal have noget for pengene! For alle voksne, der elsker underholdende og hæsblæsende bøger i genren "Literary Role-Playing Game".</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="546">
+            <subfield code="a">Tekst på dansk</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">nærkamp</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">venskab</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">identitet</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">gameshows</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">gaming</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">rumvæsener</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">overlevelse</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">vold</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">drab</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">katte</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">monstre</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">rollespil</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="650">
+            <subfield code="a">fiktive steder</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="651">
+            <subfield code="a">USA</subfield>
+            <subfield code="y">2020-2029</subfield>
+            <subfield code="v">romaner</subfield>
+            <subfield code="v">science fiction</subfield>
+            <subfield code="2">dbcsh</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="720">
+            <subfield code="a">Tom Vedsted Vonsild</subfield>
+            <subfield code="4">trl</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="720">
+            <subfield code="a">Erik Wilson</subfield>
+            <subfield code="4">ill</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="830">
+            <subfield code="a">Dungeon Crawler Carl ;</subfield>
+            <subfield code="v">[1]</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="856">
+            <subfield code="z">Adgang til lån hos eReolen.dk</subfield>
+            <subfield code="u">https://ereolen.dk/ting/object/870970-basis:143252973</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVE">
+            <subfield code="8">532390248500005763</subfield>
+            <subfield code="c">612166360110005763</subfield>
+            <subfield code="e">Not Available</subfield>
+            <subfield code="m">Nationalbibliografiske registreringer af digitalt materiale</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="0">99128175701605763</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99128175701605763</recordIdentifier>
+      <recordPosition>6</recordPosition>
+    </record>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02539cam a2200505 i 4500</leader>
+          <controlfield tag="001">99128193933305763</controlfield>
+          <controlfield tag="005">20261027191545.0</controlfield>
+          <controlfield tag="007">ta</controlfield>
+          <controlfield tag="008">251016t20252020enk    e      000 1 eng d</controlfield>
+          <datafield ind1=" " ind2=" " tag="015">
+            <subfield code="a">GBC5C2070</subfield>
+            <subfield code="2">bnb</subfield>
+          </datafield>
+          <datafield ind1="7" ind2=" " tag="016">
+            <subfield code="a">300634128</subfield>
+            <subfield code="2">Uk</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241816271</subfield>
+            <subfield code="q">(pbk.)</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241816264</subfield>
+            <subfield code="q">(hbk.)</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="024">
+            <subfield code="a">CIPO000298356</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)1545276111</subfield>
+            <subfield code="z">(OCoLC)1545277813</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)on1545276111</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)998553203705761</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="050">
+            <subfield code="a">PS3604.I49</subfield>
+            <subfield code="b">D86 2025</subfield>
+          </datafield>
+          <datafield ind1="0" ind2="4" tag="082">
+            <subfield code="a">813.6</subfield>
+            <subfield code="2">23</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Dinniman, Matt,</subfield>
+            <subfield code="e">author.</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="245">
+            <subfield code="a">Dungeon crawler Carl /</subfield>
+            <subfield code="c">Matt Dinniman.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="1" tag="264">
+            <subfield code="a">London, England :</subfield>
+            <subfield code="b">Penguin Michael Joseph,</subfield>
+            <subfield code="c">2025.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="264">
+            <subfield code="c">©2020</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">452 pages ;</subfield>
+            <subfield code="c">24 cm.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="336">
+            <subfield code="a">text</subfield>
+            <subfield code="b">txt</subfield>
+            <subfield code="2">rdacontent</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="337">
+            <subfield code="a">unmediated</subfield>
+            <subfield code="b">n</subfield>
+            <subfield code="2">rdamedia</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="338">
+            <subfield code="a">volume</subfield>
+            <subfield code="b">nc</subfield>
+            <subfield code="2">rdacarrier</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="490">
+            <subfield code="a">Dungeon crawler Carl ;</subfield>
+            <subfield code="v">1</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">Originally self-published: Matt Dinniman, 2020.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">On front cover: You will not break me.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="520">
+            <subfield code="a">You know what's worse than breaking up with your girlfriend? Being stuck with her prize-winning show cat. And you know what's worse than that? An alien invasion, the destruction of all man-made structures on Earth, and the systematic exploitation of all the survivors for a sadistic, intergalactic game show. That's what. And now Coast Guard veteran Carl and his ex-girlfriend's cat, Princess Donut, must try to survive the end of the world - or just get to the next level - in a video game-like, trap-filled, fantasy dungeon. A dungeon that's actually the set of a reality TV show with countless viewers across the galaxy. So not only do they have to stay alive, but they also need to earn ratings based on their performance. Exploding goblins. Magical potions. Deadly, drug-dealing llamas. This ain't your ordinary game show.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Prisons</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Adventure and adventurers</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Reality television programs</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Contests</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Human-animal relationships</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Artificial intelligence</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Labyrinths</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Concours et compétitions</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Intelligence artificielle</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="6" tag="650">
+            <subfield code="a">Labyrinthes</subfield>
+            <subfield code="v">Romans, nouvelles, etc.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Novels</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">LitRPG (Fiction)</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="800">
+            <subfield code="a">Dinniman, Matt.</subfield>
+            <subfield code="t">Dungeon crawler Carl (Series) ;</subfield>
+            <subfield code="v">1.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128193933305763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">SBMAG</subfield>
+            <subfield code="c">Fjernlån - Det Kgl. Aarhus</subfield>
+            <subfield code="d">2-150-5419</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="i">ARH</subfield>
+            <subfield code="j">FJE</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">KB Victor Albecks Vej, Aarhus</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99128193933305763</recordIdentifier>
+      <recordPosition>7</recordPosition>
+    </record>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>02470cam a2200529 i 4500</leader>
+          <controlfield tag="001">99128584951005763</controlfield>
+          <controlfield tag="005">20261029141507.0</controlfield>
+          <controlfield tag="007">ta</controlfield>
+          <controlfield tag="008">251223t20262021enka   e      000 1 eng d</controlfield>
+          <datafield ind1=" " ind2=" " tag="015">
+            <subfield code="a">GBC6011978</subfield>
+            <subfield code="2">bnb</subfield>
+          </datafield>
+          <datafield ind1="7" ind2=" " tag="016">
+            <subfield code="a">300674949</subfield>
+            <subfield code="2">Uk</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241829912</subfield>
+            <subfield code="q">(hardback)</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">9780241829929</subfield>
+            <subfield code="q">(paperback)</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="024">
+            <subfield code="a">CIPO000335301</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)1572418526</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(OCoLC)on1572418526</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)998597578805761</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="050">
+            <subfield code="a">PS3604.I49</subfield>
+            <subfield code="b">G38 2026</subfield>
+          </datafield>
+          <datafield ind1="0" ind2="4" tag="082">
+            <subfield code="a">813.6</subfield>
+            <subfield code="2">23</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Dinniman, Matt,</subfield>
+            <subfield code="e">author.</subfield>
+            <subfield code="1">https://id.oclc.org/worldcat/entity/E39PCjD7wTK6r7K3YR7jjhppT3</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="4" tag="245">
+            <subfield code="a">The gate of the feral gods /</subfield>
+            <subfield code="c">Matt Dinniman.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="1" tag="264">
+            <subfield code="a">London :</subfield>
+            <subfield code="b">Michael Joseph,</subfield>
+            <subfield code="c">2026.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="4" tag="264">
+            <subfield code="c">©2021</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">589 pages :</subfield>
+            <subfield code="b">illustrations ;</subfield>
+            <subfield code="c">25 cm</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="336">
+            <subfield code="a">text</subfield>
+            <subfield code="b">txt</subfield>
+            <subfield code="2">rdacontent</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="336">
+            <subfield code="a">still image</subfield>
+            <subfield code="b">sti</subfield>
+            <subfield code="2">rdacontent</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="337">
+            <subfield code="a">unmediated</subfield>
+            <subfield code="b">n</subfield>
+            <subfield code="2">rdamedia</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="338">
+            <subfield code="a">volume</subfield>
+            <subfield code="b">nc</subfield>
+            <subfield code="2">rdacarrier</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="340">
+            <subfield code="p">illustration</subfield>
+            <subfield code="0">http://rdaregistry.info/termList/IllusContent/1014</subfield>
+            <subfield code="2">rdaill</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="490">
+            <subfield code="a">Dungeon crawler Carl ;</subfield>
+            <subfield code="v">bk. 4</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="520">
+            <subfield code="a">New Achievement! Total, Utter Failure. You failed a quest less than five minutes after you received it. Now that’s talent. A floating fortress occupied by warrior gnomes. A castle made of sand. A derelict submarine guarded by malfunctioning machines. A haunted crypt surrounded by lethal traps. It was supposed to be easy. One bubble. Four castles. Fifteen days. Capture each one, and the stairwell is unlocked. Here's the thing. It's never easy. Carl and his team can't go it alone. Not this time. They must rely on the help of the low-level, I-can't-believe-these-idiots-are-still-alive crawlers trapped in the bubble with them. But can they be trusted? Welcome, Crawler. Welcome to the fifth floor of the dungeon.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">End of the world</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Television game shows</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Castles</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Labyrinths</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Monsters</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Underground areas</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Video games</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Quests (Expeditions)</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Prisons</subfield>
+            <subfield code="v">Fiction.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="0" tag="650">
+            <subfield code="a">Fiction</subfield>
+            <subfield code="y">21st century.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Novels</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction</subfield>
+            <subfield code="2">fast</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Science fiction.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Novels.</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">LitRPG (Fiction)</subfield>
+            <subfield code="2">lcgft</subfield>
+          </datafield>
+          <datafield ind1=" " ind2="7" tag="655">
+            <subfield code="a">Romans.</subfield>
+            <subfield code="2">rvmgf</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="800">
+            <subfield code="a">Dinniman, Matt.</subfield>
+            <subfield code="t">Dungeon crawler Carl (Series) ;</subfield>
+            <subfield code="v">bk. 4.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99128584951005763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">SBMAG</subfield>
+            <subfield code="c">Fjernlån - Det Kgl. Aarhus</subfield>
+            <subfield code="d">2-150-5883</subfield>
+            <subfield code="e">unavailable</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">1</subfield>
+            <subfield code="i">ARH</subfield>
+            <subfield code="j">FJE</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">KB Victor Albecks Vej, Aarhus</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99128584951005763</recordIdentifier>
+      <recordPosition>8</recordPosition>
+    </record>
+  </records>
+  <extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+    <xb:exact>true</xb:exact>
+    <xb:responseDate>2026-11-11T20:13:52+0100</xb:responseDate>
+  </extraResponseData>
+</searchRetrieveResponse>

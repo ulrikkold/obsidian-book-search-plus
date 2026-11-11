@@ -5,7 +5,7 @@
 // "Class extends value undefined is not a constructor".
 import type { BookSearchPluginSettings } from '@settings/settings';
 import { ServiceProvider } from '@src/constants';
-import { apiGet, factoryServiceProvider } from './base_api';
+import { apiGet, apiGetText, factoryServiceProvider } from './base_api';
 import { GoogleBooksApi } from './google_books_api';
 import { NaverBooksApi } from './naver_books_api';
 
@@ -104,6 +104,54 @@ describe('apiGet retry logic', () => {
 
     expect(result).toEqual(successResponse.json);
     expect(mockRequestUrl).toHaveBeenCalledTimes(4);
+  });
+});
+
+describe('apiGetText', () => {
+  beforeEach(() => {
+    mockRequestUrl.mockReset();
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('returns the response body as text, not parsed JSON', async () => {
+    mockRequestUrl.mockResolvedValue({ text: '<xml/>', json: undefined });
+    await expect(apiGetText('https://example.com')).resolves.toBe('<xml/>');
+  });
+
+  it('appends query params and passes headers through', async () => {
+    mockRequestUrl.mockResolvedValue({ text: '' });
+    await apiGetText(
+      'https://example.com/sru',
+      { query: 'a="b c"', maximumRecords: 20 },
+      { Accept: 'application/xml' },
+    );
+
+    const request = mockRequestUrl.mock.calls[0][0];
+    const url = new URL(request.url);
+    expect(url.searchParams.get('query')).toBe('a="b c"');
+    expect(url.searchParams.get('maximumRecords')).toBe('20');
+    expect(request.headers.Accept).toBe('application/xml');
+  });
+
+  it('retries on 503 like apiGet', async () => {
+    mockRequestUrl.mockRejectedValueOnce(make503()).mockResolvedValue({ text: 'ok' });
+
+    const promise = apiGetText('https://example.com');
+    await jest.runAllTimersAsync();
+
+    await expect(promise).resolves.toBe('ok');
+    expect(mockRequestUrl).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not retry on 429', async () => {
+    mockRequestUrl.mockRejectedValue(make429());
+
+    await expect(apiGetText('https://example.com')).rejects.toMatchObject({ status: 429 });
+    expect(mockRequestUrl).toHaveBeenCalledTimes(1);
   });
 });
 

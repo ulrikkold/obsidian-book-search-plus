@@ -62,24 +62,39 @@ export async function apiGet<T>(
   params: Record<string, string | number> = {},
   headers?: Record<string, string>,
 ): Promise<T> {
+  const res = await apiRequest(url, params, {
+    Accept: '*/*',
+    'Content-Type': 'application/json; charset=utf-8',
+    ...headers,
+  });
+  return res.json as T;
+}
+
+// Like apiGet, but returns the raw body. Used for providers that respond with
+// XML (e.g. SRU library catalogues), where reading `res.json` would throw.
+export async function apiGetText(
+  url: string,
+  params: Record<string, string | number> = {},
+  headers?: Record<string, string>,
+): Promise<string> {
+  const res = await apiRequest(url, params, { Accept: '*/*', ...headers });
+  return res.text;
+}
+
+async function apiRequest(url: string, params: Record<string, string | number>, headers: Record<string, string>) {
   const apiURL = new URL(url);
   appendQueryParams(apiURL, params);
 
   const requestOptions = {
     url: apiURL.href,
     method: 'GET',
-    headers: {
-      Accept: '*/*',
-      'Content-Type': 'application/json; charset=utf-8',
-      ...headers,
-    },
+    headers,
   };
 
   let lastError: unknown;
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
-      const res = await requestWithTimeout(requestOptions, REQUEST_TIMEOUT_MS);
-      return res.json as T;
+      return await requestWithTimeout(requestOptions, REQUEST_TIMEOUT_MS);
     } catch (error) {
       lastError = error;
       const status = (error as { status?: number }).status;
