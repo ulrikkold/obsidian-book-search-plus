@@ -23,37 +23,55 @@ const preset: SruPreset = {
 beforeEach(() => mockRequestUrl.mockReset());
 
 describe('buildCqlQuery', () => {
-  it('searches the ISBN index for an ISBN, without hyphens or spaces', () => {
+  it('searches the ISBN index for both the ISBN-13 and ISBN-10 form, without hyphens or spaces', () => {
     expect(buildCqlQuery(preset, ' 978-87-85539-00-7 ')).toEqual({
-      cql: 'alma.isbn=9788785539007',
+      cql: 'alma.isbn=9788785539007 or alma.isbn=8785539007',
       isbn: '9788785539007',
     });
-    expect(buildCqlQuery(preset, '87 99088 93 2')).toEqual({ cql: 'alma.isbn=8799088932', isbn: '8799088932' });
+    expect(buildCqlQuery(preset, '87 99088 93 2')).toEqual({
+      cql: 'alma.isbn=8799088932 or alma.isbn=9788799088935',
+      isbn: '8799088932',
+    });
   });
 
-  it('searches the keyword index for anything else, quoted', () => {
-    expect(buildCqlQuery(preset, 'dungeon crawler carl')).toEqual({ cql: 'alma.all_for_ui="dungeon crawler carl"' });
+  it('searches only the ISBN-13 form when there is no ISBN-10 (979 prefix)', () => {
+    expect(buildCqlQuery(preset, '9798765432100').cql).toBe('alma.isbn=9798765432100');
+  });
+
+  // `all` matches the words in any order. Checked live on 2026-11-11: with `=`
+  // the Royal Danish Library treats the words as a phrase, so
+  // "dinniman dungeon crawler" found 0 records; with `all` it found 8.
+  it('searches the keyword index for all words, in any order', () => {
+    expect(buildCqlQuery(preset, 'dungeon crawler carl')).toEqual({
+      cql: 'alma.all_for_ui all "dungeon crawler carl"',
+    });
   });
 
   it('escapes quotes and backslashes in keyword searches', () => {
-    expect(buildCqlQuery(preset, 'say "hi" \\ bye').cql).toBe('alma.all_for_ui="say \\"hi\\" \\\\ bye"');
+    expect(buildCqlQuery(preset, 'say "hi" \\ bye').cql).toBe('alma.all_for_ui all "say \\"hi\\" \\\\ bye"');
+  });
+
+  it('escapes CQL masking characters so they are searched literally', () => {
+    expect(buildCqlQuery(preset, 'Do Androids Dream of Electric Sheep?').cql).toBe(
+      'alma.all_for_ui all "Do Androids Dream of Electric Sheep\\?"',
+    );
+    expect(buildCqlQuery(preset, '*star ^wars').cql).toBe('alma.all_for_ui all "\\*star \\^wars"');
   });
 });
 
 describe('parseSruResponse', () => {
-  it('returns the total and the MARC records', () => {
-    const { total, records } = parseSruResponse(loadSruFixture('keyword_dungeon_crawler_carl.xml'));
-    expect(total).toBe(8);
+  it('returns the MARC records', () => {
+    const { records } = parseSruResponse(loadSruFixture('keyword_dungeon_crawler_carl.xml'));
     expect(records).toHaveLength(8);
     expect(records[0].localName).toBe('record');
     expect(records[0].namespaceURI).toBe('http://www.loc.gov/MARC21/slim');
   });
 
   it('returns no records for an empty result', () => {
-    expect(parseSruResponse(loadSruFixture('no_results.xml'))).toEqual({ total: 0, records: [] });
+    expect(parseSruResponse(loadSruFixture('no_results.xml'))).toEqual({ records: [] });
   });
 
-  it('throws the diagnostic message', () => {
+  it('throws the diagnostic message when there are no records', () => {
     expect(() => parseSruResponse(loadSruFixture('diagnostic_unknown_index.xml'))).toThrow(
       'Catalog search has encountered an error',
     );
@@ -61,6 +79,23 @@ describe('parseSruResponse', () => {
 
   it('throws on a response that is not XML', () => {
     expect(() => parseSruResponse('<html><body>Bad gateway')).toThrow(/not a valid SRU response/);
+  });
+
+  it('returns the records when a non-fatal diagnostic comes with them', () => {
+    const xml = loadSruFixture('keyword_dungeon_crawler_carl.xml').replace(
+      '<extraResponseData',
+      '<diagnostics><diag:diagnostic xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/"><diag:uri>info:srw/diagnostic/1/61</diag:uri><diag:message>maximumRecords reduced</diag:message></diag:diagnostic></diagnostics><extraResponseData',
+    );
+    expect(parseSruResponse(xml).records).toHaveLength(8);
+  });
+
+  it('skips a surrogate diagnostic in place of a record', () => {
+    const surrogate =
+      '<record><recordSchema>info:srw/schema/1/diagnostics-v1.1</recordSchema><recordPacking>xml</recordPacking><recordData><diag:diagnostic xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/"><diag:uri>info:srw/diagnostic/1/64</diag:uri><diag:message>Record temporarily unavailable</diag:message></diag:diagnostic></recordData></record>';
+    const xml = loadSruFixture('isbn_9788785539007.xml').replace('<records>', `<records>${surrogate}`);
+    const { records } = parseSruResponse(xml);
+    expect(records).toHaveLength(1);
+    expect(records[0].localName).toBe('record');
   });
 
   it('reads records sent with recordPacking=string', () => {
@@ -90,7 +125,7 @@ describe('SruBooksApi.getByQuery', () => {
       operation: 'searchRetrieve',
       recordSchema: 'marcxml',
       maximumRecords: '20',
-      query: 'alma.all_for_ui="dungeon crawler carl"',
+      query: 'alma.all_for_ui all "dungeon crawler carl"',
     });
   });
 
@@ -150,6 +185,9 @@ describe('SruBooksApi.getByQuery', () => {
   it('matches an ISBN-10 search against ISBN-13 records', async () => {
     respondWith('isbn_9788785539007.xml');
     const books = await api.getByQuery('8785539007');
+    // The query itself asks for both forms, so the match doesn't depend on
+    // the server mapping ISBN-10 to ISBN-13.
+    expect(requestedUrl().searchParams.get('query')).toBe('alma.isbn=8785539007 or alma.isbn=9788785539007');
     expect(books).toHaveLength(1);
     expect(books[0].isbn10).toBe('8785539007');
   });

@@ -5,6 +5,10 @@ import { SruPreset } from './sru_presets';
 
 const ISBN_REGEX = /^(97[89])?\d{9}[\dX]$/;
 
+// Backslash, quote and the CQL masking characters (*, ?, ^). Escaped so a
+// title like "Do Androids Dream of Electric Sheep?" is searched literally.
+const CQL_SPECIAL = /[\\"*?^]/g;
+
 export interface CqlQuery {
   cql: string;
   isbn?: string; // set when the query is an ISBN search
@@ -13,47 +17,61 @@ export interface CqlQuery {
 export function buildCqlQuery(preset: SruPreset, query: string): CqlQuery {
   const compact = query.replace(/[\s-]/g, '').toUpperCase();
   if (ISBN_REGEX.test(compact)) {
-    return { cql: `${preset.isbnIndex}=${compact}`, isbn: compact };
+    // Ask for both forms, so a match doesn't depend on the server mapping
+    // ISBN-10 to ISBN-13. A 979 ISBN has no ISBN-10 form.
+    const other = compact.length === 10 ? isbn10To13(compact) : isbn13To10(compact);
+    const forms = other ? [compact, other] : [compact];
+    return { cql: forms.map(isbn => `${preset.isbnIndex}=${isbn}`).join(' or '), isbn: compact };
   }
-  const escaped = query.trim().replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-  return { cql: `${preset.keywordIndex}="${escaped}"` };
+  const escaped = query.trim().replace(CQL_SPECIAL, ch => `\\${ch}`);
+  // `all` matches the words in any order. With `=`, Alma treats several
+  // words as a phrase (checked against the Royal Danish Library, 2026-11-11).
+  return { cql: `${preset.keywordIndex} all "${escaped}"` };
 }
 
 // Parses an SRU 1.2 searchRetrieve response and returns the embedded MARC
-// records. SRU reports errors as diagnostics inside a normal 200 response,
-// so those are turned into exceptions here.
-export function parseSruResponse(xml: string): { total: number; records: Element[] } {
+// records. SRU reports errors as diagnostics inside a normal 200 response.
+// A diagnostic is fatal only when no records came back: one that comes with
+// records (e.g. "maximumRecords reduced") is informational, and a surrogate
+// diagnostic in place of a record just means that record is skipped.
+export function parseSruResponse(xml: string): { records: Element[] } {
   const doc = new DOMParser().parseFromString(xml, 'application/xml');
   const root = doc.documentElement;
   if (doc.getElementsByTagName('parsererror').length || root?.localName !== 'searchRetrieveResponse') {
     throw new Error('The library returned something that is not a valid SRU response.');
   }
 
-  const diagnostic = descendants(root, 'diagnostic')[0];
-  if (diagnostic) {
-    const message = descendants(diagnostic, 'message')[0]?.textContent?.trim();
-    const uri = descendants(diagnostic, 'uri')[0]?.textContent?.trim();
-    throw new Error(message || `SRU diagnostic ${uri ?? 'without details'}`);
-  }
-
-  const total = Number(descendants(root, 'numberOfRecords')[0]?.textContent ?? 0) || 0;
-  const records = descendants(root, 'recordData')
-    .map(recordData => {
-      const element = Array.from(recordData.children).find(el => el.localName === 'record');
-      if (element) return element;
-      // recordPacking=string: the record is escaped XML inside recordData.
-      const text = recordData.textContent?.trim();
-      if (!text) return undefined;
-      const inner = new DOMParser().parseFromString(text, 'application/xml').documentElement;
-      return inner?.localName === 'record' ? inner : undefined;
-    })
+  const records = byLocalName(root, 'recordData')
+    .map(recordFromData)
     .filter((el): el is Element => !!el);
 
-  return { total, records };
+  if (!records.length) {
+    const diagnostics = Array.from(root.children).find(el => el.localName === 'diagnostics');
+    const diagnostic = diagnostics && byLocalName(diagnostics, 'diagnostic')[0];
+    if (diagnostic) {
+      const message = byLocalName(diagnostic, 'message')[0]?.textContent?.trim();
+      const uri = byLocalName(diagnostic, 'uri')[0]?.textContent?.trim();
+      throw new Error(message || `SRU diagnostic ${uri ?? 'without details'}`);
+    }
+  }
+
+  return { records };
 }
 
-function descendants(el: Element, localName: string): Element[] {
-  return Array.from(el.getElementsByTagName('*')).filter(child => child.localName === localName);
+function recordFromData(recordData: Element): Element | undefined {
+  const children = Array.from(recordData.children);
+  const record = children.find(el => el.localName === 'record');
+  if (record) return record;
+  if (children.length) return undefined; // a surrogate diagnostic, not a record
+  // recordPacking=string: the record is escaped XML inside recordData.
+  const text = recordData.textContent?.trim();
+  if (!text) return undefined;
+  const inner = new DOMParser().parseFromString(text, 'application/xml').documentElement;
+  return inner?.localName === 'record' ? inner : undefined;
+}
+
+function byLocalName(el: Element, localName: string): Element[] {
+  return Array.from(el.getElementsByTagNameNS('*', localName));
 }
 
 export class SruBooksApi implements BaseBooksApiImpl {

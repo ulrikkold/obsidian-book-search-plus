@@ -28,9 +28,13 @@ interface DataField {
 
 // Relator codes ($4) and terms ($e) that mean "wrote the book".
 const AUTHOR_CODES = new Set(['aut', 'cre']);
-const AUTHOR_TERMS = /^(author|creator|forfatter|författare|forfattar|verfasser|verfasserin)$/i;
+const AUTHOR_TERMS = /^(author|joint author|co-?author|creator|forfatter|författare|forfattar|verfasser|verfasserin)$/i;
 
-const PAGINATION = /\[?(\d+)\]?\s*(?:sider|sidor|seiten|pages|pp?\.|s\.|S\.)/i;
+const PAGE_UNIT = /\b(?:sider|sidor|seiten|pages|pp?\.|s\.)/i;
+
+// Cataloguer placeholders for an unknown publisher, e.g. "[s.n.]" or
+// "[publisher not identified]". A real name in brackets is kept.
+const PUBLISHER_PLACEHOLDER = /^\[(?:s\.\s?n\.?|sine nomine|.*(?:not identified|nicht ermittelt).*)\]$/i;
 
 export function parseMarcRecord(record: Element): MarcBookFields {
   const controlFields = new Map<string, string>();
@@ -48,13 +52,15 @@ export function parseMarcRecord(record: Element): MarcBookFields {
           .filter(sf => sf.localName === 'subfield')
           .map(sf => ({ code: sf.getAttribute('code') ?? '', value: sf.textContent ?? '' })),
       };
-      dataFields.set(tag, [...(dataFields.get(tag) ?? []), field]);
+      const existing = dataFields.get(tag);
+      if (existing) existing.push(field);
+      else dataFields.set(tag, [field]);
     }
   }
 
   const fields = (tag: string) => dataFields.get(tag) ?? [];
   const isbns = parseIsbns(fields('020'));
-  const series = parseSeries(fields('830')[0] ?? fields('490')[0]);
+  const series = parseSeries(fields('830')[0], fields('490')[0]);
   const imprint = parseImprint(fields('264'), fields('260'), controlFields.get('008'));
 
   return {
@@ -83,13 +89,16 @@ function all(field: DataField, code: string): string[] {
 
 // Removes the ISBD punctuation that MARC leaves at the end of subfields
 // ("Title /", "Place :", "Publisher,", "Series ;", "Title."), but keeps the
-// period after an initial ("Tolkien, J. R. R.").
+// period after an initial ("Tolkien, J. R. R.") and an ellipsis ("And then...").
+//
+// No regex lookbehind here or elsewhere in the plugin: iOS before 16.4 can't
+// parse it, and a syntax error in the bundle stops the whole plugin loading.
 export function stripIsbdPunctuation(value: string): string {
-  return value
-    .trim()
-    .replace(/\s*[/:;,=]$/, '')
-    .replace(/(?<!(?:^|[\s.])\p{Lu})\.$/u, '')
-    .trim();
+  let result = value.trim().replace(/\s*[/:;,=]$/, '');
+  if (result.endsWith('.') && !result.endsWith('..') && !/(?:^|[\s.])\p{Lu}\.$/u.test(result)) {
+    result = result.slice(0, -1);
+  }
+  return result.trim();
 }
 
 // "Dinniman, Matt" → "Matt Dinniman". Names without a comma are returned as is.
@@ -104,8 +113,10 @@ export function invertName(value: string): string {
 
 function parseTitle(field: DataField | undefined): { title: string; subtitle: string } {
   if (!field) return { title: '', subtitle: '' };
-  const title = [...all(field, 'a'), ...all(field, 'n'), ...all(field, 'p')]
-    .map(stripIsbdPunctuation)
+  // Subfields in record order, so repeated part numbers ($n) stay with their names ($p).
+  const title = field.subfields
+    .filter(sf => sf.code === 'a' || sf.code === 'n' || sf.code === 'p')
+    .map(sf => stripIsbdPunctuation(sf.value))
     .filter(Boolean)
     .join('. ');
   return { title, subtitle: stripIsbdPunctuation(first(field, 'b')) };
@@ -124,10 +135,11 @@ function parseAuthors(nameFields: DataField[]): string[] {
 }
 
 // A name with no relator counts as an author (common in older records); a
-// name/title entry ($t) refers to another work and never does.
+// name/title entry ($t) refers to another work and never does. $4 can hold a
+// code ("aut") or a URI ("http://id.loc.gov/vocabulary/relators/aut").
 function isAuthor(field: DataField): boolean {
   if (all(field, 't').length) return false;
-  const codes = all(field, '4').map(c => c.trim().toLowerCase());
+  const codes = all(field, '4').map(c => c.trim().toLowerCase().split('/').pop() ?? '');
   const terms = all(field, 'e').map(stripIsbdPunctuation);
   if (!codes.length && !terms.length) return true;
   return codes.some(c => AUTHOR_CODES.has(c)) || terms.some(t => AUTHOR_TERMS.test(t));
@@ -146,7 +158,9 @@ function parseImprint(
     ...f260,
     ...f264.filter(f => f.ind2 !== '1' && f.ind2 !== '4'),
   ];
-  const publisher = candidates.map(f => stripIsbdPunctuation(first(f, 'b'))).find(Boolean) ?? '';
+  const publisher =
+    candidates.map(f => stripIsbdPunctuation(first(f, 'b'))).find(name => name && !PUBLISHER_PLACEHOLDER.test(name)) ??
+    '';
   const year =
     [...candidates, ...f264.filter(f => f.ind2 === '4')].map(f => extractYear(first(f, 'c'))).find(Boolean) ??
     extractYear(f008?.slice(7, 11) ?? '') ??
@@ -158,17 +172,24 @@ function extractYear(value: string): string | undefined {
   return value.match(/\d{4}/)?.[0];
 }
 
+// The largest number before the page unit, so "xii, 406, [2] sider" gives 406.
+// "1,088" and "1.088" are read as thousands.
 export function parsePageCount(value: string): number | undefined {
-  const match = value.match(PAGINATION);
-  return match ? Number(match[1]) : undefined;
+  const text = value.replace(/(\d)[,.](\d{3})(?!\d)/g, '$1$2');
+  const unit = text.search(PAGE_UNIT);
+  if (unit === -1) return undefined;
+  const numbers = text.slice(0, unit).match(/\d+/g);
+  return numbers ? Math.max(...numbers.map(Number)) : undefined;
 }
 
-// 650 subjects (except ind2=6, the French-language Canadian thesaurus) and
-// 655 genres, deduplicated after punctuation is stripped.
+// 650 subjects and 655 genres, deduplicated after punctuation is stripped.
+// French-language headings from the Canadian RVM thesaurus are left out:
+// 650 with ind2=6, and any field whose $2 source is rvm or rvmgf.
 function parseCategories(f650: DataField[], f655: DataField[]): string[] {
+  const isFrench = (f: DataField) => f.ind2 === '6' || all(f, '2').some(src => /^rvm/i.test(src.trim()));
   const seen = new Set<string>();
   const categories: string[] = [];
-  for (const field of [...f650.filter(f => f.ind2 !== '6'), ...f655]) {
+  for (const field of [...f650, ...f655].filter(f => !isFrench(f))) {
     const term = stripIsbdPunctuation(first(field, 'a'));
     if (term && !seen.has(term.toLowerCase())) {
       seen.add(term.toLowerCase());
@@ -178,11 +199,15 @@ function parseCategories(f650: DataField[], f655: DataField[]): string[] {
   return categories;
 }
 
-function parseSeries(field: DataField | undefined): { series: string; seriesNumber: string } {
-  if (!field) return { series: '', seriesNumber: '' };
+// The authorised series heading (830) first, then the series statement (490).
+// Name and number are taken separately, because an 830 often has no number.
+function parseSeries(
+  f830: DataField | undefined,
+  f490: DataField | undefined,
+): { series: string; seriesNumber: string } {
   return {
-    series: stripIsbdPunctuation(first(field, 'a')),
-    seriesNumber: parseSeriesNumber(first(field, 'v')),
+    series: stripIsbdPunctuation(first(f830, 'a') || first(f490, 'a')),
+    seriesNumber: parseSeriesNumber(first(f830, 'v') || first(f490, 'v')),
   };
 }
 
@@ -195,8 +220,9 @@ export function parseSeriesNumber(value: string): string {
 function parseIsbns(f020: DataField[]): { isbn10: string; isbn13: string; isbns: string[] } {
   const found = f020.map(f => normalizeIsbn(first(f, 'a'))).filter((isbn): isbn is string => !!isbn);
   const isbns = [...new Set(found.map(isbn => (isbn.length === 10 ? isbn10To13(isbn) : isbn)))];
+  // Both forms come from the same ISBN, so they never mix editions.
   const isbn13 = isbns[0] ?? '';
-  const isbn10 = found.find(isbn => isbn.length === 10) ?? (isbn13 ? isbn13To10(isbn13) : undefined) ?? '';
+  const isbn10 = (isbn13 && isbn13To10(isbn13)) || '';
   return { isbn10, isbn13, isbns };
 }
 

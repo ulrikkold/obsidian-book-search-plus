@@ -25,6 +25,12 @@ describe('stripIsbdPunctuation', () => {
 
   it('keeps the period after an initial', () => {
     expect(stripIsbdPunctuation('Tolkien, J. R. R.')).toBe('Tolkien, J. R. R.');
+    expect(stripIsbdPunctuation('J.')).toBe('J.');
+  });
+
+  it('keeps an ellipsis', () => {
+    expect(stripIsbdPunctuation('And then...')).toBe('And then...');
+    expect(stripIsbdPunctuation('And then... /')).toBe('And then...');
   });
 });
 
@@ -48,6 +54,11 @@ describe('parsePageCount', () => {
     ['[120] sider', 120],
     ['250 s.', 250],
     ['312 Seiten', 312],
+    ['xii, 406, [2] sider', 406],
+    ['317, [3] pages ;', 317],
+    ['xvi, 1,088 pages', 1088],
+    ['1.088 sider', 1088],
+    ['1 online resource (300 pages)', 300],
   ])('%p → %p', (input, expected) => {
     expect(parsePageCount(input)).toBe(expected);
   });
@@ -184,6 +195,12 @@ describe('parseMarcRecord: keyword search records', () => {
     expect(withFrench.categories).toContain('Labyrinths');
   });
 
+  it('leaves out French genre terms from 655 ($2 rvmgf)', () => {
+    const fields = parseMarcRecord(records.get('99128584951005763'));
+    expect(fields.categories).not.toContain('Romans');
+    expect(fields.categories).toContain('Novels');
+  });
+
   it('subtitle from 245 $b; first 260 $b only; bracketed series number', () => {
     const fields = parseMarcRecord(records.get('99128175701605763'));
     expect(fields.title).toBe('Dungeon Crawler Carl');
@@ -241,6 +258,52 @@ describe('parseMarcRecord: edge cases', () => {
     expect(fields.isbn10).toBe('8799088932');
     expect(fields.isbn13).toBe('9788799088935');
     expect(fields.isbns).toEqual(['9788799088935']);
+  });
+
+  it('keeps repeated 245 $n and $p in the order they appear', () => {
+    const record = marcRecord(
+      `<datafield tag="245" ind1="1" ind2="0"><subfield code="a">Encyclopedia.</subfield><subfield code="n">Vol. 1,</subfield><subfield code="p">Animals.</subfield><subfield code="n">Vol. 2,</subfield><subfield code="p">Plants.</subfield></datafield>`,
+    );
+    expect(parseMarcRecord(record).title).toBe('Encyclopedia. Vol. 1. Animals. Vol. 2. Plants');
+  });
+
+  it('takes ISBN-10 and ISBN-13 from the same 020, not from different editions', () => {
+    const record = marcRecord(df('020', { a: '9780241829820' }) + df('020', { a: '0140449132' }));
+    const fields = parseMarcRecord(record);
+    expect(fields.isbn13).toBe('9780241829820');
+    expect(fields.isbn10).toBe('0241829828');
+  });
+
+  it('recognises relator URIs and "joint author"', () => {
+    const record = marcRecord(
+      df('100', { a: 'Pratchett, Terry,', '4': 'http://id.loc.gov/vocabulary/relators/aut' }, '1') +
+        df('700', { a: 'Gaiman, Neil,', e: 'joint author.' }, '1') +
+        df('700', { a: 'Kidby, Paul,', '4': 'http://id.loc.gov/vocabulary/relators/ill' }, '1'),
+    );
+    expect(parseMarcRecord(record).authors).toEqual(['Terry Pratchett', 'Neil Gaiman']);
+  });
+
+  it('takes the series number from 490 when 830 has none', () => {
+    const record = marcRecord(
+      df('490', { a: 'Big series ;', v: '3' }, '1') + df('830', { a: 'Big series.' }, ' ', '0'),
+    );
+    const fields = parseMarcRecord(record);
+    expect(fields.series).toBe('Big series');
+    expect(fields.seriesNumber).toBe('3');
+  });
+
+  it.each(['[publisher not identified],', '[s.n.],', '[Verlag nicht ermittelt]'])(
+    'ignores the publisher placeholder %p',
+    placeholder => {
+      const record = marcRecord(df('264', { a: '[Place] :', b: placeholder, c: '2024' }, ' ', '1'));
+      expect(parseMarcRecord(record).publisher).toBe('');
+      expect(parseMarcRecord(record).publishDate).toBe('2024');
+    },
+  );
+
+  it('keeps a publisher supplied in brackets by the cataloguer', () => {
+    const record = marcRecord(df('260', { b: '[DreamLitt],', c: '2026' }));
+    expect(parseMarcRecord(record).publisher).toBe('[DreamLitt]');
   });
 
   it('adds 245 $n and $p to the title', () => {
