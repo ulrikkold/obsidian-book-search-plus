@@ -32,6 +32,9 @@ describe('invertName', () => {
     ['Gerhard, Jeldrik.', 'Jeldrik Gerhard'],
     ['Tolkien, J. R. R.', 'J. R. R. Tolkien'],
     ['Tom Vedsted Vonsild', 'Tom Vedsted Vonsild'],
+    ['Martin Luther King, Jr.', 'Martin Luther King, Jr.'],
+    ['King, Martin Luther, Jr.', 'Martin Luther King, Jr.'],
+    ['Smith, Viv', 'Viv Smith'],
   ])('%p → %p', (input, expected) => {
     expect(invertName(input)).toBe(expected);
   });
@@ -69,6 +72,8 @@ describe('parseSeriesNumber', () => {
     ['2. bind', '2'],
     ['vol. 1.5', '1.5'],
     ['Teil A', 'Teil A'],
+    ['1-3', '1-3'],
+    ['bind 1 - 3', '1-3'],
   ])('%p → %p', (input, expected) => {
     expect(parseSeriesNumber(input)).toBe(expected);
   });
@@ -190,6 +195,60 @@ const df = (tag: string, subfields: Record<string, string>, ind1 = ' ', ind2 = '
     .join('')}</datafield>`;
 
 describe('parseMarcRecord: edge cases', () => {
+  it('pairs the series number with the right series when there are several', () => {
+    const record = marcRecord(
+      df('490', { a: 'Penguin classics ;', v: '42' }, '1') +
+        df('490', { a: 'Discworld ;', v: '3' }, '1') +
+        df('830', { a: 'Discworld.' }, ' ', '0') +
+        df('830', { a: 'Penguin classics ;', v: '42.' }, ' ', '0'),
+    );
+    const fields = parseMarcRecord(record);
+    expect(fields.series).toBe('Discworld');
+    expect(fields.seriesNumber).toBe('3');
+  });
+
+  it('ignores "[S.l. : s.n.]" where the brackets span $a and $b', () => {
+    const record = marcRecord(df('260', { a: '[S.l. :', b: 's.n.],', c: '1985.' }));
+    expect(parseMarcRecord(record).publisher).toBe('');
+    expect(parseMarcRecord(record).publishDate).toBe('1985');
+  });
+
+  it('removes the unmatched bracket from a publisher when the brackets span $a and $b', () => {
+    const record = marcRecord(df('260', { a: '[S.l. :', b: 'Forlag X],', c: '1985.' }));
+    expect(parseMarcRecord(record).publisher).toBe('Forlag X');
+  });
+
+  it.each(['[udgiver ikke identificeret],', '[utgivare okänd]', '[förlag ej identifierad]'])(
+    'ignores the Scandinavian publisher placeholder %p',
+    placeholder => {
+      const record = marcRecord(df('264', { b: placeholder, c: '2024' }, ' ', '1'));
+      expect(parseMarcRecord(record).publisher).toBe('');
+    },
+  );
+
+  it('keeps a real publisher whose name contains a placeholder word', () => {
+    const record = marcRecord(df('260', { b: 'Unknown Press,', c: '2001' }));
+    expect(parseMarcRecord(record).publisher).toBe('Unknown Press');
+  });
+
+  it('reads a corporate or meeting main entry (110/111) as the author', () => {
+    const record = marcRecord(
+      df('110', { a: 'Aarhus Universitet.', b: 'Institut for Statskundskab,', e: 'author.' }, '2'),
+    );
+    expect(parseMarcRecord(record).authors).toEqual(['Aarhus Universitet. Institut for Statskundskab']);
+    const meeting = marcRecord(df('111', { a: 'Nordic Library Conference' }, '2'));
+    expect(parseMarcRecord(meeting).authors).toEqual(['Nordic Library Conference']);
+  });
+
+  it('counts a corporate added entry (710/711) only when it is marked as author', () => {
+    const record = marcRecord(
+      df('100', { a: 'Hansen, Ole,', '4': 'aut' }, '1') +
+        df('710', { a: 'Danmarks Statistik,', '4': 'aut' }, '2') +
+        df('710', { a: 'Gyldendal (Firm)' }, '2'),
+    );
+    expect(parseMarcRecord(record).authors).toEqual(['Ole Hansen', 'Danmarks Statistik']);
+  });
+
   it('falls back to 008 for the year when there is no 260/264', () => {
     const record = marcRecord(
       `<controlfield tag="008">230201s2019    dk ||||g      00||0 dan||</controlfield>${df('245', { a: 'Titel' })}`,

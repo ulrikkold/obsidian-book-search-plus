@@ -34,8 +34,21 @@ describe('buildCqlQuery', () => {
     });
   });
 
+  it('strips an ISBN prefix before checking for an ISBN', () => {
+    expect(buildCqlQuery(preset, 'ISBN 978-87-85539-00-7').isbn13).toBe('9788785539007');
+    expect(buildCqlQuery(preset, 'ISBN: 8799088932').isbn13).toBe('9788799088935');
+    expect(buildCqlQuery(preset, 'isbn-13 9788785539007').isbn13).toBe('9788785539007');
+  });
+
+  it('searches keywords when the number is not a valid ISBN', () => {
+    expect(buildCqlQuery(preset, '9788785539008')).toEqual({ cql: 'alma.all_for_ui all "9788785539008"' });
+    // The ISBN-13 form of the 0000000000 placeholder.
+    expect(buildCqlQuery(preset, '9780000000002')).toEqual({ cql: 'alma.all_for_ui all "9780000000002"' });
+    expect(buildCqlQuery(preset, 'ISBN 123')).toEqual({ cql: 'alma.all_for_ui all "ISBN 123"' });
+  });
+
   it('searches only the ISBN-13 form when there is no ISBN-10 (979 prefix)', () => {
-    expect(buildCqlQuery(preset, '9798765432100').cql).toBe('alma.isbn=9798765432100');
+    expect(buildCqlQuery(preset, '9798765432105').cql).toBe('alma.isbn=9798765432105');
   });
 
   // `all` matches the words in any order. Checked live on 2026-11-11: with `=`
@@ -93,6 +106,15 @@ describe('parseSruResponse', () => {
     const surrogate =
       '<record><recordSchema>info:srw/schema/1/diagnostics-v1.1</recordSchema><recordPacking>xml</recordPacking><recordData><diag:diagnostic xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/"><diag:uri>info:srw/diagnostic/1/64</diag:uri><diag:message>Record temporarily unavailable</diag:message></diag:diagnostic></recordData></record>';
     const xml = loadSruFixture('isbn_9788785539007.xml').replace('<records>', `<records>${surrogate}`);
+    const records = parseSruResponse(xml);
+    expect(records).toHaveLength(1);
+    expect(records[0].localName).toBe('record');
+  });
+
+  it('reads a record wrapped in a MARCXML collection', () => {
+    const xml = loadSruFixture('isbn_9788785539007.xml')
+      .replace('<recordData>', '<recordData><collection xmlns="http://www.loc.gov/MARC21/slim">')
+      .replace('</recordData>', '</collection></recordData>');
     const records = parseSruResponse(xml);
     expect(records).toHaveLength(1);
     expect(records[0].localName).toBe('record');
@@ -167,18 +189,31 @@ describe('SruBooksApi.getByQuery', () => {
     ]);
   });
 
-  it('drops records from an ISBN search that do not carry that ISBN', async () => {
-    respondWith('isbn_spurious_matches.xml');
-    await expect(api.getByQuery('9780000000002')).resolves.toEqual([]);
+  // The library's ISBN index also matches 020 $z (cancelled or invalid
+  // ISBNs, e.g. misprints), so results are trusted rather than filtered.
+  it('returns a record whose ISBN is only in 020 $z, reporting the searched ISBN', async () => {
+    mockRequestUrl.mockResolvedValue({
+      text: loadSruFixture('isbn_9788785539007.xml').replace(
+        '<subfield code="a">9788785539007</subfield>',
+        '<subfield code="z">9788785539007</subfield>',
+      ),
+    });
+    const books = await api.getByQuery('9788785539007');
+    expect(books).toHaveLength(1);
+    expect(books[0].title).toBe('Carls dommedagsscenarie');
+    expect(books[0].isbn13).toBe('9788785539007');
   });
 
-  it('reports the searched ISBN when a record lists several', async () => {
-    respondWith('keyword_dungeon_crawler_carl.xml');
-    const books = await api.getByQuery('978-0-241-82981-3');
-    expect(books).toHaveLength(1);
-    expect(books[0].title).toBe("The butcher's masquerade");
-    expect(books[0].isbn13).toBe('9780241829813');
-    expect(books[0].isbn10).toBe('024182981X');
+  it('reports the searched ISBN when a record lists another one first', async () => {
+    mockRequestUrl.mockResolvedValue({
+      text: loadSruFixture('isbn_9788785539007.xml').replace(
+        '<datafield ind1=" " ind2=" " tag="020">',
+        '<datafield ind1=" " ind2=" " tag="020"><subfield code="a">9780241829813</subfield></datafield><datafield ind1=" " ind2=" " tag="020">',
+      ),
+    });
+    const [book] = await api.getByQuery('978-87-85539-00-7');
+    expect(book.isbn13).toBe('9788785539007');
+    expect(book.isbn10).toBe('8785539007');
   });
 
   it('matches an ISBN-10 search against ISBN-13 records', async () => {

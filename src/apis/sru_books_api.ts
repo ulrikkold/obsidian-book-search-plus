@@ -1,6 +1,6 @@
 import { apiGetText, BaseBooksApiImpl } from '@apis/base_api';
 import { Book } from '@models/book.model';
-import { ISBN_REGEX, isbn13To10, toIsbn13 } from '@utils/isbn';
+import { ISBN_REGEX, isbn13To10, normalizeIsbn, toIsbn13 } from '@utils/isbn';
 import { MarcBookFields, parseMarcRecord } from './marcxml';
 import { SruPreset } from './sru_presets';
 
@@ -11,14 +11,19 @@ const DEFAULT_MAXIMUM_RECORDS = 20;
 // title like "Do Androids Dream of Electric Sheep?" is searched literally.
 const CQL_SPECIAL = /[\\"*?^]/g;
 
+// "ISBN", "ISBN:" or "ISBN-13" in front of a pasted number.
+const ISBN_PREFIX = /^isbn(?:-1[03])?:?\s*/i;
+
 export interface CqlQuery {
   cql: string;
   isbn13?: string; // set when the query is an ISBN search
 }
 
 export function buildCqlQuery(preset: SruPreset, query: string): CqlQuery {
-  const compact = query.replace(/[\s-]/g, '').toUpperCase();
-  if (ISBN_REGEX.test(compact)) {
+  const compact = query.trim().replace(ISBN_PREFIX, '').replace(/[\s-]/g, '').toUpperCase();
+  // Only a real ISBN (right shape, valid check digit, not a placeholder such
+  // as 0000000000) becomes an ISBN search. Anything else is searched as words.
+  if (ISBN_REGEX.test(compact) && normalizeIsbn(compact) === compact) {
     // Ask for both forms, so a match doesn't depend on the server mapping
     // ISBN-10 to ISBN-13. A 979 ISBN has no ISBN-10 form.
     const isbn13 = toIsbn13(compact);
@@ -61,10 +66,10 @@ export function parseSruResponse(xml: string): Element[] {
 }
 
 function recordFromData(recordData: Element): Element | undefined {
-  const children = Array.from(recordData.children);
-  const record = children.find(el => el.localName === 'record');
+  // The record is a direct child, or wrapped in a MARCXML <collection>.
+  const record = byLocalName(recordData, 'record')[0];
   if (record) return record;
-  if (children.length) return undefined; // a surrogate diagnostic, not a record
+  if (recordData.children.length) return undefined; // a surrogate diagnostic, not a record
   // recordPacking=string: the record is escaped XML inside recordData.
   const text = recordData.textContent?.trim();
   if (!text) return undefined;
@@ -92,12 +97,10 @@ export class SruBooksApi implements BaseBooksApiImpl {
       };
       const xml = await apiGetText(this.preset.baseUrl, params, { Accept: 'application/xml, text/xml' });
       const fields = parseSruResponse(xml).map(parseMarcRecord);
-      if (!isbn13) return fields.map(f => this.createBookItem(f));
-
-      // ISBN indexes can return records that don't carry the ISBN (Alma
-      // matches "0000000000" placeholders, for instance), so keep only exact
-      // matches and report the searched ISBN rather than the record's first.
-      return fields.filter(f => f.isbns.includes(isbn13)).map(f => this.createBookItem(f, isbn13));
+      // The library's ISBN index matches every form of the ISBN, including
+      // cancelled or invalid ones in 020 $z (e.g. misprints), so its results
+      // are trusted. Each one reports the ISBN that was searched for.
+      return fields.map(f => this.createBookItem(f, isbn13));
     } catch (error) {
       console.warn(error);
       throw error;

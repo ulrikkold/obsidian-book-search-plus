@@ -19,6 +19,8 @@ describe('normalizeIsbn', () => {
 
   it('rejects invalid and placeholder ISBNs', () => {
     expect(normalizeIsbn('0000000000')).toBeUndefined();
+    // The ISBN-13 form of the 0000000000 placeholder.
+    expect(normalizeIsbn('9780000000002')).toBeUndefined();
     expect(normalizeIsbn('9788785539008')).toBeUndefined();
     expect(normalizeIsbn('not an isbn')).toBeUndefined();
   });

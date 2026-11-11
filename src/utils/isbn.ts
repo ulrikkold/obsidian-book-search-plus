@@ -7,13 +7,13 @@ export const ISBN_REGEX = /^(97[89])?\d{9}[\dX]$/;
 
 // Extracts a checksum-valid ISBN-10 or ISBN-13 from a value such as
 // "978-87-85539-00-7" or "8799088932 (hf.)". Returns undefined otherwise,
-// including for placeholder values like "0000000000".
+// including for the placeholder "0000000000" and its ISBN-13 form.
 export function normalizeIsbn(value: string): string | undefined {
   const candidate = value
     .match(/[\dXx][\dXx-]{8,16}[\dXx]/)?.[0]
     ?.replace(/-/g, '')
     .toUpperCase();
-  if (!candidate || /^0+$/.test(candidate)) return undefined;
+  if (!candidate || /^(97[89])?0{9}/.test(candidate)) return undefined;
   if (/^\d{9}[\dX]$/.test(candidate) && isbn10CheckDigit(candidate.slice(0, 9)) === candidate[9]) return candidate;
   if (/^\d{13}$/.test(candidate) && isbn13CheckDigit(candidate.slice(0, 12)) === candidate[12]) return candidate;
   return undefined;

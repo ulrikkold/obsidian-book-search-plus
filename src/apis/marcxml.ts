@@ -32,9 +32,14 @@ const AUTHOR_TERMS = /^(author|joint author|co-?author|creator|forfatter|förfat
 
 const PAGE_UNIT = /\b(?:sider|sidor|seiten|pages|pp?\.|s\.)/i;
 
-// Cataloguer placeholders for an unknown publisher, e.g. "[s.n.]" or
-// "[publisher not identified]". A real name in brackets is kept.
-const PUBLISHER_PLACEHOLDER = /^\[(?:s\.\s?n\.?|sine nomine|.*(?:not identified|nicht ermittelt).*)\]$/i;
+// Cataloguer placeholders for an unknown publisher: "[s.n.]" and the RDA
+// phrases in English, German, Danish and Swedish. Only the s.n. forms count
+// without brackets, so "Unknown Press" stays a publisher.
+const SINE_NOMINE = /^(?:s\.\s?n\.?|sine nomine)$/i;
+const PLACEHOLDER_PHRASE = /not identified|nicht ermittelt|ikke identificeret|ej identifierad|okänd|ukendt/i;
+
+// Name suffixes that stay after the name: "Martin Luther King, Jr.".
+const NAME_SUFFIX = /^(?:jr|sr)\.?$|^(?:II|III|IV)$/i;
 
 export function parseMarcRecord(record: Element): MarcBookFields {
   const controlFields = new Map<string, string>();
@@ -63,7 +68,7 @@ export function parseMarcRecord(record: Element): MarcBookFields {
   return {
     id: controlFields.get('001')?.trim() ?? '',
     ...parseTitle(fields('245')[0]),
-    authors: parseAuthors([...fields('100'), ...fields('700'), ...fields('720')]),
+    authors: parseAuthors(fields),
     ...parseImprint(fields('264'), fields('260'), controlFields.get('008')),
     totalPage: parsePageCount(first(fields('300')[0], 'a')),
     description: fields('520')
@@ -72,7 +77,7 @@ export function parseMarcRecord(record: Element): MarcBookFields {
       .join('\n\n'),
     categories: parseCategories(fields('650'), fields('655')),
     isbns: parseIsbns(fields('020')),
-    ...parseSeries(fields('830')[0], fields('490')[0]),
+    ...parseSeries(fields('830'), fields('490')),
   };
 }
 
@@ -98,14 +103,20 @@ export function stripIsbdPunctuation(value: string): string {
   return result.trim();
 }
 
-// "Dinniman, Matt" → "Matt Dinniman". Names without a comma are returned as is.
+// "Dinniman, Matt" → "Matt Dinniman", "King, Martin Luther, Jr." →
+// "Martin Luther King, Jr.". A name already in direct order, such as
+// "Martin Luther King, Jr." or "Tom Vedsted Vonsild", is returned as is.
 export function invertName(value: string): string {
-  const name = stripIsbdPunctuation(value);
-  const comma = name.indexOf(',');
-  if (comma === -1) return name;
-  const surname = name.slice(0, comma).trim();
-  const forenames = stripIsbdPunctuation(name.slice(comma + 1));
-  return forenames ? `${forenames} ${surname}` : surname;
+  const parts = value
+    .trim()
+    .replace(/\s*[/:;,=]$/, '')
+    .split(',')
+    .map(part => part.trim())
+    .filter(Boolean);
+  const suffix = parts.length > 1 && NAME_SUFFIX.test(parts[parts.length - 1]) ? parts.pop() : undefined;
+  const [surname, ...forenames] = parts.map(stripIsbdPunctuation);
+  const name = forenames.length ? `${forenames.join(' ')} ${surname}` : surname ?? '';
+  return suffix ? `${name}, ${suffix}` : name;
 }
 
 function parseTitle(field: DataField | undefined): { title: string; subtitle: string } {
@@ -119,26 +130,52 @@ function parseTitle(field: DataField | undefined): { title: string; subtitle: st
   return { title, subtitle: stripIsbdPunctuation(first(field, 'b')) };
 }
 
-function parseAuthors(nameFields: DataField[]): string[] {
+// Main entries (100 person, 110 organisation, 111 meeting) and added entries
+// (700, 710, 711, 720). An organisation or meeting in an added entry is often
+// a publisher or sponsor, so it only counts when it is marked as author.
+function parseAuthors(fields: (tag: string) => DataField[]): string[] {
+  const entries: { field: DataField; corporate: boolean; needsRelator: boolean }[] = [
+    ...fields('100').map(field => ({ field, corporate: false, needsRelator: false })),
+    ...[...fields('110'), ...fields('111')].map(field => ({ field, corporate: true, needsRelator: false })),
+    ...fields('700').map(field => ({ field, corporate: false, needsRelator: false })),
+    ...[...fields('710'), ...fields('711')].map(field => ({ field, corporate: true, needsRelator: true })),
+    // 720 ind1=2 is a name that isn't a person.
+    ...fields('720').map(field => ({ field, corporate: field.ind1 === '2', needsRelator: false })),
+  ];
   const authors: string[] = [];
-  for (const field of nameFields) {
-    if (!isAuthor(field)) continue;
-    const raw = first(field, 'a');
-    // ind1=0 is a forename-only heading ("Elizabeth II, Queen ...").
-    const name = field.ind1 === '0' ? stripIsbdPunctuation(raw) : invertName(raw);
+  for (const { field, corporate, needsRelator } of entries) {
+    if (!isAuthor(field, needsRelator)) continue;
+    const name = corporate ? corporateName(field) : personalName(field);
     if (name && !authors.includes(name)) authors.push(name);
   }
   return authors;
 }
 
-// A name with no relator counts as an author (common in older records); a
-// name/title entry ($t) refers to another work and never does. $4 can hold a
-// code ("aut") or a URI ("http://id.loc.gov/vocabulary/relators/aut").
-function isAuthor(field: DataField): boolean {
+function personalName(field: DataField): string {
+  const raw = first(field, 'a');
+  // ind1=0 is a forename-only heading ("Elizabeth II, Queen ...").
+  return field.ind1 === '0' ? stripIsbdPunctuation(raw) : invertName(raw);
+}
+
+// "Aarhus Universitet. Institut for Statskundskab": the name ($a) and any
+// subordinate units ($b), in record order.
+function corporateName(field: DataField): string {
+  return field.subfields
+    .filter(sf => sf.code === 'a' || sf.code === 'b')
+    .map(sf => stripIsbdPunctuation(sf.value))
+    .filter(Boolean)
+    .join('. ');
+}
+
+// A name with no relator counts as an author (common in older records), unless
+// needsRelator is set; a name/title entry ($t) refers to another work and
+// never does. $4 can hold a code ("aut") or a URI
+// ("http://id.loc.gov/vocabulary/relators/aut").
+function isAuthor(field: DataField, needsRelator: boolean): boolean {
   if (field.subfields.some(sf => sf.code === 't')) return false;
   const codes = all(field, '4').map(c => c.trim().toLowerCase().split('/').pop() ?? '');
   const terms = all(field, 'e').map(stripIsbdPunctuation);
-  if (!codes.length && !terms.length) return true;
+  if (!codes.length && !terms.length) return !needsRelator;
   return codes.some(c => AUTHOR_CODES.has(c)) || terms.some(t => AUTHOR_TERMS.test(t));
 }
 
@@ -155,14 +192,25 @@ function parseImprint(
     ...f260,
     ...f264.filter(f => f.ind2 !== '1' && f.ind2 !== '4'),
   ];
-  const publisher =
-    candidates.map(f => stripIsbdPunctuation(first(f, 'b'))).find(name => name && !PUBLISHER_PLACEHOLDER.test(name)) ??
-    '';
+  const publisher = candidates.map(f => publisherName(first(f, 'b'))).find(Boolean) ?? '';
   const year =
     [...candidates, ...f264.filter(f => f.ind2 === '4')].map(f => extractYear(first(f, 'c'))).find(Boolean) ??
     extractYear(f008?.slice(7, 11) ?? '') ??
     '';
   return { publisher, publishDate: year };
+}
+
+// The publisher in 260/264 $b, or '' for a placeholder. In older records the
+// brackets can span $a and $b ("$a [S.l. : $b s.n.]"), leaving one unmatched
+// bracket in $b; that bracket is removed. A name in matching brackets, supplied
+// by the cataloguer, is kept as is.
+function publisherName(value: string): string {
+  const name = stripIsbdPunctuation(value);
+  const opens = name.startsWith('[');
+  const closes = name.endsWith(']');
+  const inner = name.slice(opens ? 1 : 0, closes ? -1 : undefined).trim();
+  if (SINE_NOMINE.test(inner) || ((opens || closes) && PLACEHOLDER_PHRASE.test(inner))) return '';
+  return opens && closes ? name : inner;
 }
 
 function extractYear(value: string): string | undefined {
@@ -198,21 +246,27 @@ function parseCategories(f650: DataField[], f655: DataField[]): string[] {
 }
 
 // The authorised series heading (830) first, then the series statement (490).
-// Name and number are taken separately, because an 830 often has no number.
-function parseSeries(
-  f830: DataField | undefined,
-  f490: DataField | undefined,
-): { series: string; seriesNumber: string } {
-  return {
-    series: stripIsbdPunctuation(first(f830, 'a') || first(f490, 'a')),
-    seriesNumber: parseSeriesNumber(first(f830, 'v') || first(f490, 'v')),
-  };
+// An 830 often has no number; it is then taken from the 490 for the same
+// series, so a record in several series never mixes one name with another
+// series' number.
+function parseSeries(f830: DataField[], f490: DataField[]): { series: string; seriesNumber: string } {
+  const heading = f830[0];
+  if (!heading) {
+    return { series: stripIsbdPunctuation(first(f490[0], 'a')), seriesNumber: parseSeriesNumber(first(f490[0], 'v')) };
+  }
+  const series = stripIsbdPunctuation(first(heading, 'a'));
+  const key = series.toLowerCase();
+  const statement =
+    f490.find(f => stripIsbdPunctuation(first(f, 'a')).toLowerCase() === key) ??
+    (f490.length === 1 && f830.length === 1 ? f490[0] : undefined);
+  return { series, seriesNumber: parseSeriesNumber(first(heading, 'v') || first(statement, 'v')) };
 }
 
-// "bog 2", "bk. 5", "[1]" → the number; anything without a number as is.
+// "bog 2", "bk. 5", "[1]" → the number, "1 - 3" → "1-3"; anything without a
+// number as is.
 export function parseSeriesNumber(value: string): string {
-  const number = value.match(/\d+(?:[.,]\d+)?/)?.[0];
-  return number ?? stripIsbdPunctuation(value.replace(/[[\]]/g, ''));
+  const number = value.match(/\d+(?:[.,]\d+)?(?:\s*[-–]\s*\d+(?:[.,]\d+)?)?/)?.[0];
+  return number ? number.replace(/\s*[-–]\s*/, '-') : stripIsbdPunctuation(value.replace(/[[\]]/g, ''));
 }
 
 function parseIsbns(f020: DataField[]): string[] {
