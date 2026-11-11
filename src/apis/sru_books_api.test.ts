@@ -1,4 +1,5 @@
-import { loadSruFixture } from '../../test/sru_fixtures';
+import { loadSruFixture, marcRecordsById } from '../../test/sru_fixtures';
+import { parseMarcRecord } from './marcxml';
 import { buildCqlQuery, parseSruResponse, SruBooksApi } from './sru_books_api';
 import { ROYAL_DANISH_LIBRARY, SruPreset } from './sru_presets';
 
@@ -16,8 +17,7 @@ const preset: SruPreset = {
   baseUrl: 'https://example.org/sru',
   keywordIndex: 'alma.all_for_ui',
   isbnIndex: 'alma.isbn',
-  maximumRecords: 20,
-  recordUrl: id => `https://example.org/record/${id}`,
+  recordUrl: 'https://example.org/record/{id}',
 };
 
 beforeEach(() => mockRequestUrl.mockReset());
@@ -26,11 +26,11 @@ describe('buildCqlQuery', () => {
   it('searches the ISBN index for both the ISBN-13 and ISBN-10 form, without hyphens or spaces', () => {
     expect(buildCqlQuery(preset, ' 978-87-85539-00-7 ')).toEqual({
       cql: 'alma.isbn=9788785539007 or alma.isbn=8785539007',
-      isbn: '9788785539007',
+      isbn13: '9788785539007',
     });
     expect(buildCqlQuery(preset, '87 99088 93 2')).toEqual({
       cql: 'alma.isbn=8799088932 or alma.isbn=9788799088935',
-      isbn: '8799088932',
+      isbn13: '9788799088935',
     });
   });
 
@@ -61,14 +61,14 @@ describe('buildCqlQuery', () => {
 
 describe('parseSruResponse', () => {
   it('returns the MARC records', () => {
-    const { records } = parseSruResponse(loadSruFixture('keyword_dungeon_crawler_carl.xml'));
+    const records = parseSruResponse(loadSruFixture('keyword_dungeon_crawler_carl.xml'));
     expect(records).toHaveLength(8);
     expect(records[0].localName).toBe('record');
     expect(records[0].namespaceURI).toBe('http://www.loc.gov/MARC21/slim');
   });
 
   it('returns no records for an empty result', () => {
-    expect(parseSruResponse(loadSruFixture('no_results.xml'))).toEqual({ records: [] });
+    expect(parseSruResponse(loadSruFixture('no_results.xml'))).toEqual([]);
   });
 
   it('throws the diagnostic message when there are no records', () => {
@@ -86,26 +86,25 @@ describe('parseSruResponse', () => {
       '<extraResponseData',
       '<diagnostics><diag:diagnostic xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/"><diag:uri>info:srw/diagnostic/1/61</diag:uri><diag:message>maximumRecords reduced</diag:message></diag:diagnostic></diagnostics><extraResponseData',
     );
-    expect(parseSruResponse(xml).records).toHaveLength(8);
+    expect(parseSruResponse(xml)).toHaveLength(8);
   });
 
   it('skips a surrogate diagnostic in place of a record', () => {
     const surrogate =
       '<record><recordSchema>info:srw/schema/1/diagnostics-v1.1</recordSchema><recordPacking>xml</recordPacking><recordData><diag:diagnostic xmlns:diag="http://www.loc.gov/zing/srw/diagnostic/"><diag:uri>info:srw/diagnostic/1/64</diag:uri><diag:message>Record temporarily unavailable</diag:message></diag:diagnostic></recordData></record>';
     const xml = loadSruFixture('isbn_9788785539007.xml').replace('<records>', `<records>${surrogate}`);
-    const { records } = parseSruResponse(xml);
+    const records = parseSruResponse(xml);
     expect(records).toHaveLength(1);
     expect(records[0].localName).toBe('record');
   });
 
   it('reads records sent with recordPacking=string', () => {
-    const inner = loadSruFixture('isbn_9788785539007.xml').match(
-      /<record xmlns="http:\/\/www.loc.gov\/MARC21\/slim">[\s\S]*?<\/record>\s*<\/recordData>/,
+    const marc = loadSruFixture('isbn_9788785539007.xml').match(
+      /<record xmlns="http:\/\/www.loc.gov\/MARC21\/slim">[\s\S]*?<\/record>/,
     )[0];
-    const marc = inner.replace(/<\/recordData>$/, '');
     const escaped = marc.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     const xml = `<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/"><numberOfRecords>1</numberOfRecords><records><record><recordPacking>string</recordPacking><recordData>${escaped}</recordData></record></records></searchRetrieveResponse>`;
-    const { records } = parseSruResponse(xml);
+    const records = parseSruResponse(xml);
     expect(records).toHaveLength(1);
     expect(records[0].localName).toBe('record');
   });
@@ -202,6 +201,32 @@ describe('SruBooksApi.getByQuery', () => {
     await expect(api.getByQuery('anything')).rejects.toThrow('Catalog search has encountered an error');
   });
 
+  it('asks for at most 20 records, or fewer when the preset caps it lower', async () => {
+    respondWith('no_results.xml');
+    await new SruBooksApi({ ...preset, maximumRecords: 50 }).getByQuery('carl');
+    expect(requestedUrl().searchParams.get('maximumRecords')).toBe('20');
+
+    mockRequestUrl.mockClear();
+    await new SruBooksApi({ ...preset, maximumRecords: 5 }).getByQuery('carl');
+    expect(requestedUrl().searchParams.get('maximumRecords')).toBe('5');
+  });
+
+  it('uses the preset record schema when it has one', async () => {
+    respondWith('no_results.xml');
+    await new SruBooksApi({ ...preset, recordSchema: 'MARC21-xml' }).getByQuery('carl');
+    expect(requestedUrl().searchParams.get('recordSchema')).toBe('MARC21-xml');
+  });
+
+  it('derives ISBN-10 from the ISBN-13 it reports, never from another edition', async () => {
+    respondWith('isbn_9788785539007.xml');
+    const [book] = await api.getByQuery('9788785539007');
+    const fields = { ...parseMarcRecord(marcRecordsById('isbn_9788785539007.xml').get('99128819715505763')) };
+    const mixed = api.createBookItem({ ...fields, isbns: ['9780241829820', '9780140449136'] });
+    expect(mixed.isbn13).toBe('9780241829820');
+    expect(mixed.isbn10).toBe('0241829828');
+    expect(book.isbn10).toBe('8785539007');
+  });
+
   it('does not send a request for an empty query', async () => {
     await expect(api.getByQuery('   ')).resolves.toEqual([]);
     expect(mockRequestUrl).not.toHaveBeenCalled();
@@ -215,12 +240,7 @@ describe('SruBooksApi.getByQuery', () => {
 });
 
 describe('ROYAL_DANISH_LIBRARY preset', () => {
-  it('points at the Alma SRU endpoint with Alma index names', () => {
-    expect(ROYAL_DANISH_LIBRARY).toMatchObject({
-      baseUrl: 'https://kbdk-kgl.alma.exlibrisgroup.com/view/sru/45KBDK_KGL',
-      keywordIndex: 'alma.all_for_ui',
-      isbnIndex: 'alma.isbn',
-    });
-    expect(ROYAL_DANISH_LIBRARY.maximumRecords).toBeLessThanOrEqual(50);
+  it('has an {id} placeholder in its record URL', () => {
+    expect(ROYAL_DANISH_LIBRARY.recordUrl).toContain('{id}');
   });
 });

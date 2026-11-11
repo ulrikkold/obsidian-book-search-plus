@@ -3,6 +3,8 @@
 // Elements are matched on local name rather than namespace or prefix, since
 // SRU servers differ in how they qualify the MARCXML they embed.
 
+import { normalizeIsbn, toIsbn13 } from '@utils/isbn';
+
 export interface MarcBookFields {
   id: string; // 001 control number
   title: string;
@@ -13,9 +15,7 @@ export interface MarcBookFields {
   totalPage?: number;
   description: string;
   categories: string[];
-  isbn10: string;
-  isbn13: string;
-  isbns: string[]; // every valid ISBN in 020 $a, as ISBN-13
+  isbns: string[]; // every valid ISBN in 020 $a, as ISBN-13, in record order
   series: string;
   seriesNumber: string;
 }
@@ -59,23 +59,20 @@ export function parseMarcRecord(record: Element): MarcBookFields {
   }
 
   const fields = (tag: string) => dataFields.get(tag) ?? [];
-  const isbns = parseIsbns(fields('020'));
-  const series = parseSeries(fields('830')[0], fields('490')[0]);
-  const imprint = parseImprint(fields('264'), fields('260'), controlFields.get('008'));
 
   return {
     id: controlFields.get('001')?.trim() ?? '',
     ...parseTitle(fields('245')[0]),
     authors: parseAuthors([...fields('100'), ...fields('700'), ...fields('720')]),
-    ...imprint,
+    ...parseImprint(fields('264'), fields('260'), controlFields.get('008')),
     totalPage: parsePageCount(first(fields('300')[0], 'a')),
     description: fields('520')
       .map(f => first(f, 'a').trim())
       .filter(Boolean)
       .join('\n\n'),
     categories: parseCategories(fields('650'), fields('655')),
-    ...isbns,
-    ...series,
+    isbns: parseIsbns(fields('020')),
+    ...parseSeries(fields('830')[0], fields('490')[0]),
   };
 }
 
@@ -138,7 +135,7 @@ function parseAuthors(nameFields: DataField[]): string[] {
 // name/title entry ($t) refers to another work and never does. $4 can hold a
 // code ("aut") or a URI ("http://id.loc.gov/vocabulary/relators/aut").
 function isAuthor(field: DataField): boolean {
-  if (all(field, 't').length) return false;
+  if (field.subfields.some(sf => sf.code === 't')) return false;
   const codes = all(field, '4').map(c => c.trim().toLowerCase().split('/').pop() ?? '');
   const terms = all(field, 'e').map(stripIsbdPunctuation);
   if (!codes.length && !terms.length) return true;
@@ -191,8 +188,9 @@ function parseCategories(f650: DataField[], f655: DataField[]): string[] {
   const categories: string[] = [];
   for (const field of [...f650, ...f655].filter(f => !isFrench(f))) {
     const term = stripIsbdPunctuation(first(field, 'a'));
-    if (term && !seen.has(term.toLowerCase())) {
-      seen.add(term.toLowerCase());
+    const key = term.toLowerCase();
+    if (term && !seen.has(key)) {
+      seen.add(key);
       categories.push(term);
     }
   }
@@ -217,47 +215,7 @@ export function parseSeriesNumber(value: string): string {
   return number ?? stripIsbdPunctuation(value.replace(/[[\]]/g, ''));
 }
 
-function parseIsbns(f020: DataField[]): { isbn10: string; isbn13: string; isbns: string[] } {
+function parseIsbns(f020: DataField[]): string[] {
   const found = f020.map(f => normalizeIsbn(first(f, 'a'))).filter((isbn): isbn is string => !!isbn);
-  const isbns = [...new Set(found.map(isbn => (isbn.length === 10 ? isbn10To13(isbn) : isbn)))];
-  // Both forms come from the same ISBN, so they never mix editions.
-  const isbn13 = isbns[0] ?? '';
-  const isbn10 = (isbn13 && isbn13To10(isbn13)) || '';
-  return { isbn10, isbn13, isbns };
-}
-
-// Extracts a checksum-valid ISBN-10 or ISBN-13 from a 020 $a value such as
-// "978-87-85539-00-7" or "8799088932 (hf.)". Returns undefined otherwise,
-// including for placeholder values like "0000000000".
-export function normalizeIsbn(value: string): string | undefined {
-  const candidate = value
-    .match(/[\dXx][\dXx-]{8,16}[\dXx]/)?.[0]
-    ?.replace(/-/g, '')
-    .toUpperCase();
-  if (!candidate || /^0+$/.test(candidate)) return undefined;
-  if (/^\d{9}[\dX]$/.test(candidate) && isbn10CheckDigit(candidate.slice(0, 9)) === candidate[9]) return candidate;
-  if (/^\d{13}$/.test(candidate) && isbn13CheckDigit(candidate.slice(0, 12)) === candidate[12]) return candidate;
-  return undefined;
-}
-
-export function isbn10To13(isbn10: string): string {
-  const body = `978${isbn10.slice(0, 9)}`;
-  return body + isbn13CheckDigit(body);
-}
-
-export function isbn13To10(isbn13: string): string | undefined {
-  if (!isbn13.startsWith('978')) return undefined;
-  const body = isbn13.slice(3, 12);
-  return body + isbn10CheckDigit(body);
-}
-
-function isbn10CheckDigit(body: string): string {
-  const sum = [...body].reduce((acc, digit, i) => acc + Number(digit) * (10 - i), 0);
-  const check = (11 - (sum % 11)) % 11;
-  return check === 10 ? 'X' : String(check);
-}
-
-function isbn13CheckDigit(body: string): string {
-  const sum = [...body].reduce((acc, digit, i) => acc + Number(digit) * (i % 2 ? 3 : 1), 0);
-  return String((10 - (sum % 10)) % 10);
+  return [...new Set(found.map(toIsbn13))];
 }

@@ -1,9 +1,11 @@
 import { apiGetText, BaseBooksApiImpl } from '@apis/base_api';
 import { Book } from '@models/book.model';
-import { isbn10To13, isbn13To10, MarcBookFields, parseMarcRecord } from './marcxml';
+import { ISBN_REGEX, isbn13To10, toIsbn13 } from '@utils/isbn';
+import { MarcBookFields, parseMarcRecord } from './marcxml';
 import { SruPreset } from './sru_presets';
 
-const ISBN_REGEX = /^(97[89])?\d{9}[\dX]$/;
+// How many results a search asks for, unless the server caps it lower.
+const DEFAULT_MAXIMUM_RECORDS = 20;
 
 // Backslash, quote and the CQL masking characters (*, ?, ^). Escaped so a
 // title like "Do Androids Dream of Electric Sheep?" is searched literally.
@@ -11,7 +13,7 @@ const CQL_SPECIAL = /[\\"*?^]/g;
 
 export interface CqlQuery {
   cql: string;
-  isbn?: string; // set when the query is an ISBN search
+  isbn13?: string; // set when the query is an ISBN search
 }
 
 export function buildCqlQuery(preset: SruPreset, query: string): CqlQuery {
@@ -19,9 +21,10 @@ export function buildCqlQuery(preset: SruPreset, query: string): CqlQuery {
   if (ISBN_REGEX.test(compact)) {
     // Ask for both forms, so a match doesn't depend on the server mapping
     // ISBN-10 to ISBN-13. A 979 ISBN has no ISBN-10 form.
-    const other = compact.length === 10 ? isbn10To13(compact) : isbn13To10(compact);
+    const isbn13 = toIsbn13(compact);
+    const other = compact.length === 10 ? isbn13 : isbn13To10(isbn13);
     const forms = other ? [compact, other] : [compact];
-    return { cql: forms.map(isbn => `${preset.isbnIndex}=${isbn}`).join(' or '), isbn: compact };
+    return { cql: forms.map(isbn => `${preset.isbnIndex}=${isbn}`).join(' or '), isbn13 };
   }
   const escaped = query.trim().replace(CQL_SPECIAL, ch => `\\${ch}`);
   // `all` matches the words in any order. With `=`, Alma treats several
@@ -34,7 +37,7 @@ export function buildCqlQuery(preset: SruPreset, query: string): CqlQuery {
 // A diagnostic is fatal only when no records came back: one that comes with
 // records (e.g. "maximumRecords reduced") is informational, and a surrogate
 // diagnostic in place of a record just means that record is skipped.
-export function parseSruResponse(xml: string): { records: Element[] } {
+export function parseSruResponse(xml: string): Element[] {
   const doc = new DOMParser().parseFromString(xml, 'application/xml');
   const root = doc.documentElement;
   if (doc.getElementsByTagName('parsererror').length || root?.localName !== 'searchRetrieveResponse') {
@@ -45,17 +48,16 @@ export function parseSruResponse(xml: string): { records: Element[] } {
     .map(recordFromData)
     .filter((el): el is Element => !!el);
 
-  if (!records.length) {
-    const diagnostics = Array.from(root.children).find(el => el.localName === 'diagnostics');
-    const diagnostic = diagnostics && byLocalName(diagnostics, 'diagnostic')[0];
-    if (diagnostic) {
-      const message = byLocalName(diagnostic, 'message')[0]?.textContent?.trim();
-      const uri = byLocalName(diagnostic, 'uri')[0]?.textContent?.trim();
-      throw new Error(message || `SRU diagnostic ${uri ?? 'without details'}`);
-    }
-  }
+  if (records.length) return records;
 
-  return { records };
+  const diagnostics = Array.from(root.children).find(el => el.localName === 'diagnostics');
+  const diagnostic = diagnostics && byLocalName(diagnostics, 'diagnostic')[0];
+  if (diagnostic) {
+    const message = byLocalName(diagnostic, 'message')[0]?.textContent?.trim();
+    const uri = byLocalName(diagnostic, 'uri')[0]?.textContent?.trim();
+    throw new Error(message || `SRU diagnostic ${uri ?? 'without details'}`);
+  }
+  return records;
 }
 
 function recordFromData(recordData: Element): Element | undefined {
@@ -77,42 +79,33 @@ function byLocalName(el: Element, localName: string): Element[] {
 export class SruBooksApi implements BaseBooksApiImpl {
   constructor(private readonly preset: SruPreset) {}
 
-  public buildSearchParams(query: string): { params: Record<string, string | number>; isbn?: string } {
-    const { cql, isbn } = buildCqlQuery(this.preset, query);
-    return {
-      params: {
-        version: '1.2',
-        operation: 'searchRetrieve',
-        recordSchema: 'marcxml',
-        maximumRecords: this.preset.maximumRecords,
-        query: cql,
-      },
-      isbn,
-    };
-  }
-
   async getByQuery(query: string): Promise<Book[]> {
     if (!query.trim()) return [];
     try {
-      const { params, isbn } = this.buildSearchParams(query);
+      const { cql, isbn13 } = buildCqlQuery(this.preset, query);
+      const params = {
+        version: '1.2',
+        operation: 'searchRetrieve',
+        recordSchema: this.preset.recordSchema ?? 'marcxml',
+        maximumRecords: Math.min(DEFAULT_MAXIMUM_RECORDS, this.preset.maximumRecords ?? DEFAULT_MAXIMUM_RECORDS),
+        query: cql,
+      };
       const xml = await apiGetText(this.preset.baseUrl, params, { Accept: 'application/xml, text/xml' });
-      const fields = parseSruResponse(xml).records.map(parseMarcRecord);
-      if (!isbn) return fields.map(f => this.createBookItem(f));
+      const fields = parseSruResponse(xml).map(parseMarcRecord);
+      if (!isbn13) return fields.map(f => this.createBookItem(f));
 
       // ISBN indexes can return records that don't carry the ISBN (Alma
       // matches "0000000000" placeholders, for instance), so keep only exact
       // matches and report the searched ISBN rather than the record's first.
-      const isbn13 = isbn.length === 10 ? isbn10To13(isbn) : isbn;
-      return fields
-        .filter(f => f.isbns.includes(isbn13))
-        .map(f => this.createBookItem({ ...f, isbn13, isbn10: isbn13To10(isbn13) ?? '' }));
+      return fields.filter(f => f.isbns.includes(isbn13)).map(f => this.createBookItem(f, isbn13));
     } catch (error) {
       console.warn(error);
       throw error;
     }
   }
 
-  public createBookItem(fields: MarcBookFields): Book {
+  // isbn10 is always derived from isbn13, so the pair never mixes editions.
+  public createBookItem(fields: MarcBookFields, isbn13 = fields.isbns[0] ?? ''): Book {
     return {
       title: fields.title,
       subtitle: fields.subtitle,
@@ -126,10 +119,11 @@ export class SruBooksApi implements BaseBooksApiImpl {
       coverUrl: '',
       coverSmallUrl: '',
       description: fields.description,
-      link: fields.id && this.preset.recordUrl ? this.preset.recordUrl(fields.id) : '',
+      link:
+        fields.id && this.preset.recordUrl ? this.preset.recordUrl.replace('{id}', encodeURIComponent(fields.id)) : '',
       previewLink: '',
-      isbn10: fields.isbn10,
-      isbn13: fields.isbn13,
+      isbn10: isbn13To10(isbn13) ?? '',
+      isbn13,
     };
   }
 }

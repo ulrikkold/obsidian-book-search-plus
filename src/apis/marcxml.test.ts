@@ -1,14 +1,5 @@
 import { marcRecordsById } from '../../test/sru_fixtures';
-import {
-  invertName,
-  isbn10To13,
-  isbn13To10,
-  normalizeIsbn,
-  parseMarcRecord,
-  parsePageCount,
-  parseSeriesNumber,
-  stripIsbdPunctuation,
-} from './marcxml';
+import { invertName, parseMarcRecord, parsePageCount, parseSeriesNumber, stripIsbdPunctuation } from './marcxml';
 
 describe('stripIsbdPunctuation', () => {
   it.each([
@@ -83,26 +74,6 @@ describe('parseSeriesNumber', () => {
   });
 });
 
-describe('ISBN helpers', () => {
-  it('normalizes a valid ISBN and drops qualifiers and hyphens', () => {
-    expect(normalizeIsbn('978-87-85539-00-7')).toBe('9788785539007');
-    expect(normalizeIsbn('8799088932 (hf.)')).toBe('8799088932');
-    expect(normalizeIsbn('080442957x')).toBe('080442957X');
-  });
-
-  it('rejects invalid and placeholder ISBNs', () => {
-    expect(normalizeIsbn('0000000000')).toBeUndefined();
-    expect(normalizeIsbn('9788785539008')).toBeUndefined();
-    expect(normalizeIsbn('not an isbn')).toBeUndefined();
-  });
-
-  it('converts between ISBN-10 and ISBN-13', () => {
-    expect(isbn10To13('8799088932')).toBe('9788799088935');
-    expect(isbn13To10('9788799088935')).toBe('8799088932');
-    expect(isbn13To10('9798765432100')).toBeUndefined();
-  });
-});
-
 describe('parseMarcRecord: Danish translation (ISBN 9788785539007)', () => {
   const record = marcRecordsById('isbn_9788785539007.xml').get('99128819715505763');
   const fields = parseMarcRecord(record);
@@ -129,9 +100,7 @@ describe('parseMarcRecord: Danish translation (ISBN 9788785539007)', () => {
     expect(fields.totalPage).toBe(406);
   });
 
-  it('reads ISBN-13', () => {
-    expect(fields.isbn13).toBe('9788785539007');
-    expect(fields.isbn10).toBe('8785539007');
+  it('reads the ISBN as ISBN-13', () => {
     expect(fields.isbns).toEqual(['9788785539007']);
   });
 
@@ -170,7 +139,6 @@ describe('parseMarcRecord: keyword search records', () => {
     expect(fields.publisher).toBe('Michael Joseph');
     expect(fields.publishDate).toBe('2026');
     expect(fields.totalPage).toBe(707);
-    expect(fields.isbn13).toBe('9780241829820');
     expect(fields.isbns).toEqual(['9780241829820', '9780241829813']);
     expect(fields.series).toBe('Dungeon crawler Carl');
     expect(fields.seriesNumber).toBe('5');
@@ -252,12 +220,9 @@ describe('parseMarcRecord: edge cases', () => {
     expect(parseMarcRecord(record).authors).toEqual(['Elizabeth II, Queen of Great Britain']);
   });
 
-  it('derives ISBN-13 from an ISBN-10-only record', () => {
+  it('converts an ISBN-10 to ISBN-13', () => {
     const record = marcRecord(df('020', { a: '8799088932 (hf.)' }));
-    const fields = parseMarcRecord(record);
-    expect(fields.isbn10).toBe('8799088932');
-    expect(fields.isbn13).toBe('9788799088935');
-    expect(fields.isbns).toEqual(['9788799088935']);
+    expect(parseMarcRecord(record).isbns).toEqual(['9788799088935']);
   });
 
   it('keeps repeated 245 $n and $p in the order they appear', () => {
@@ -267,11 +232,9 @@ describe('parseMarcRecord: edge cases', () => {
     expect(parseMarcRecord(record).title).toBe('Encyclopedia. Vol. 1. Animals. Vol. 2. Plants');
   });
 
-  it('takes ISBN-10 and ISBN-13 from the same 020, not from different editions', () => {
+  it('lists every ISBN in 020 as ISBN-13, in record order', () => {
     const record = marcRecord(df('020', { a: '9780241829820' }) + df('020', { a: '0140449132' }));
-    const fields = parseMarcRecord(record);
-    expect(fields.isbn13).toBe('9780241829820');
-    expect(fields.isbn10).toBe('0241829828');
+    expect(parseMarcRecord(record).isbns).toEqual(['9780241829820', '9780140449136']);
   });
 
   it('recognises relator URIs and "joint author"', () => {
@@ -306,11 +269,6 @@ describe('parseMarcRecord: edge cases', () => {
     expect(parseMarcRecord(record).publisher).toBe('[DreamLitt]');
   });
 
-  it('adds 245 $n and $p to the title', () => {
-    const record = marcRecord(df('245', { a: 'Ringenes herre.', n: 'Del 1,', p: 'Eventyret om ringen' }, '1', '0'));
-    expect(parseMarcRecord(record).title).toBe('Ringenes herre. Del 1. Eventyret om ringen');
-  });
-
   it('returns empty fields for an empty record', () => {
     const fields = parseMarcRecord(marcRecord(''));
     expect(fields).toMatchObject({
@@ -323,8 +281,6 @@ describe('parseMarcRecord: edge cases', () => {
       totalPage: undefined,
       description: '',
       categories: [],
-      isbn10: '',
-      isbn13: '',
       isbns: [],
       series: '',
       seriesNumber: '',
@@ -339,8 +295,6 @@ describe('parseMarcRecord: placeholder ISBNs', () => {
     expect(parseMarcRecord(records.get('99124493133605763')).isbns).toEqual([]);
     const fields = parseMarcRecord(records.get('99122600923205763'));
     expect(fields.isbns).toEqual([]);
-    expect(fields.isbn10).toBe('');
-    expect(fields.isbn13).toBe('');
   });
 
   it('reads 260 $c with a trailing period', () => {
