@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>2</numberOfRecords>
+  <records>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>00493nam a2200181 i 4500</leader>
+          <controlfield tag="001">99124493133605763</controlfield>
+          <controlfield tag="005">20230328130441.0</controlfield>
+          <controlfield tag="008">230201s2022    dk ||||g      00||0 eng||</controlfield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="q">Hf.</subfield>
+            <subfield code="z">0000000000</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(DK-870970)135508489</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)996849536105761</subfield>
+          </datafield>
+          <datafield ind1="1" ind2=" " tag="100">
+            <subfield code="a">Gerhard, Jeldrik.</subfield>
+            <subfield code="4">aut</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="245">
+            <subfield code="a">Bird seeds.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="250">
+            <subfield code="a">1. udgave.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="260">
+            <subfield code="a">[Frederiksberg] :</subfield>
+            <subfield code="b">Meta Ventures,</subfield>
+            <subfield code="c">2022.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">169 sider</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="500">
+            <subfield code="a">På omslaget: Simple everyday ideas.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99124493133605763</subfield>
+            <subfield code="8">222233981100005763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">SBMAG</subfield>
+            <subfield code="c">Loan collection (place request)</subfield>
+            <subfield code="d">1-137-2607</subfield>
+            <subfield code="e">available</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">0</subfield>
+            <subfield code="i">ARH</subfield>
+            <subfield code="j">HFSMAGVAK4</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">KB Victor Albecks Vej, Aarhus</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99124493133605763</subfield>
+            <subfield code="8">222233981040005763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">KBL</subfield>
+            <subfield code="c">Reading room only (place request)</subfield>
+            <subfield code="d">0P-8-A6620</subfield>
+            <subfield code="e">available</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">0</subfield>
+            <subfield code="i">KBH</subfield>
+            <subfield code="j">LFVINGE072</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">2</subfield>
+            <subfield code="q">The Black Diamond, Copenhagen</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99124493133605763</recordIdentifier>
+      <recordPosition>1</recordPosition>
+    </record>
+    <record>
+      <recordSchema>marcxml</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <record xmlns="http://www.loc.gov/MARC21/slim">
+          <leader>01330nam a2200289 i 4500</leader>
+          <controlfield tag="001">99122600923205763</controlfield>
+          <controlfield tag="005">20261027152006.0</controlfield>
+          <controlfield tag="008">191025s2002    dk ||||||     00||u dan||</controlfield>
+          <datafield ind1=" " ind2=" " tag="020">
+            <subfield code="a">0000000000</subfield>
+            <subfield code="c">:gratis</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(DK-870970)112429751</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="035">
+            <subfield code="a">(EXLNZ-45KBDK_NETWORK)995578202905761</subfield>
+          </datafield>
+          <datafield ind1="1" ind2="0" tag="245">
+            <subfield code="a">En undersøgelse af årsager til afbrud indenfor sygeplejerskeuddannelsen I Århus Amt i foråret 2002.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="260">
+            <subfield code="a">Århus :</subfield>
+            <subfield code="b">Udviklingsinitiativet for Sygeplejerskeuddannelsen i Århus Amt,</subfield>
+            <subfield code="c">2002.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="300">
+            <subfield code="a">19 sider.</subfield>
+          </datafield>
+          <datafield ind1="8" ind2=" " tag="520">
+            <subfield code="a">I perioden 1991 til 2001 har det gennemsnitlige frafald på sygeplejerskeuddannelsen i Århus Amt ligget på 20%. Århus Amt har i lyset af dette besluttet at se nærmere på baggrunden for de studerendes beslutning om at afbryde uddannelsen. Formålet med undersøgelsen er at dokumentere bevæggrunde for og årsager til studieafbrud. I forlængelse heraf gives der anbefalinger til, hvordan afbrudsprocenten formentlig kan nedbringes.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="653">
+            <subfield code="a">sygeplejerskeuddannelsen</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="653">
+            <subfield code="a">frafald</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="653">
+            <subfield code="a">frafaldsårsager</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="653">
+            <subfield code="a">afbrudsundersøgelse</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="653">
+            <subfield code="a">kvalitativ undersøgelse</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="653">
+            <subfield code="a">sygeplejerskeuddannelse</subfield>
+          </datafield>
+          <datafield ind1="0" ind2="0" tag="998">
+            <subfield code="a">andr.</subfield>
+          </datafield>
+          <datafield ind1=" " ind2=" " tag="AVA">
+            <subfield code="0">99122600923205763</subfield>
+            <subfield code="8">221863498230005763</subfield>
+            <subfield code="a">45KBDK_KGL</subfield>
+            <subfield code="b">SBMAG</subfield>
+            <subfield code="c">Loan collection (place request)</subfield>
+            <subfield code="d">BA08-3768</subfield>
+            <subfield code="e">available</subfield>
+            <subfield code="f">1</subfield>
+            <subfield code="g">0</subfield>
+            <subfield code="i">ARH</subfield>
+            <subfield code="j">HFSDEP14</subfield>
+            <subfield code="k">8</subfield>
+            <subfield code="p">1</subfield>
+            <subfield code="q">KB Victor Albecks Vej, Aarhus</subfield>
+          </datafield>
+        </record>
+      </recordData>
+      <recordIdentifier>99122600923205763</recordIdentifier>
+      <recordPosition>2</recordPosition>
+    </record>
+  </records>
+  <extraResponseData xmlns:xb="http://www.exlibris.com/repository/search/xmlbeans/">
+    <xb:exact>true</xb:exact>
+    <xb:responseDate>2026-11-11T20:13:53+0100</xb:responseDate>
+  </extraResponseData>
+</searchRetrieveResponse>
